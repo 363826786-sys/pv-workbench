@@ -95,6 +95,20 @@
   .chart-legend { display: flex; gap: 12px; flex-wrap: wrap; font-size: 13px; margin: 8px 0; color: var(--muted); }
   .dot { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 4px; }
   svg.chart { width: 100%; height: auto; display: block; }
+  html { scroll-behavior: smooth; }
+  section { scroll-margin-top: 76px; }
+  .topnav { position: sticky; top: 0; z-index: 50; background: var(--card); border: 1px solid var(--line);
+    border-radius: 12px; padding: 8px 10px; margin-bottom: 16px; display: flex; gap: 6px;
+    flex-wrap: wrap; box-shadow: 0 1px 3px rgba(0,0,0,.06); }
+  .topnav a { font-size: 13px; color: var(--muted); text-decoration: none; padding: 5px 12px;
+    border-radius: 14px; border: 1px solid var(--line); white-space: nowrap; }
+  .topnav a:hover { color: #0e7490; border-color: #0e7490; }
+  body.dark .topnav a:hover { color: #7dd3fc; border-color: #7dd3fc; }
+  .btn { display: inline-block; padding: 8px 20px; border-radius: 18px; border: none;
+    background: #0e7490; color: #fff; font-size: 14px; cursor: pointer; }
+  .btn:hover { opacity: .9; }
+  .collapsed { display: none; }
+  #calcBody { margin-top: 12px; }
 </style>
 </head>
 <body>
@@ -142,6 +156,25 @@ function toggleTheme() {
   try { localStorage.setItem("wb-theme", dark ? "dark" : "light"); } catch (e) {}
   const b = document.getElementById("themeBtn");
   if (b) b.textContent = dark ? "☀️ 浅色" : "🌙 深色";
+}
+
+function toggleCalc() {
+  const body = document.getElementById("calcBody");
+  const btn = document.getElementById("calcToggle");
+  const collapsed = body.classList.toggle("collapsed");
+  btn.textContent = collapsed ? "🧮 打开测算器" : "收起测算器";
+  if (!collapsed) calc();
+}
+function gotoCalc(e) {
+  if (e) e.preventDefault();
+  const body = document.getElementById("calcBody");
+  const btn = document.getElementById("calcToggle");
+  if (body.classList.contains("collapsed")) {
+    body.classList.remove("collapsed");
+    btn.textContent = "收起测算器";
+    calc();
+  }
+  document.getElementById("sec-calc").scrollIntoView({ behavior: "smooth" });
 }
 
 /* ---------- 资讯：搜索 + 分类 ---------- */
@@ -375,7 +408,16 @@ function render(d) {
     '<div class="meta">数据更新于 ' + esc(fmtTime(d.updated_at)) + "（北京时间）</div>" +
     (d.digest ? '<div class="digest">📌 ' + esc(d.digest) + "</div>" : "") + "</header>" +
 
-    '<section><h2>广东电价</h2><div class="grid2">' +
+    '<nav class="topnav">' +
+      '<a href="#sec-price">广东电价</a>' +
+      '<a href="#sec-calc" onclick="gotoCalc(event)">收益测算</a>' +
+      '<a href="#sec-irr">辐照预报</a>' +
+      '<a href="#sec-news">每日资讯</a>' +
+      '<a href="#sec-chain">产业链价格</a>' +
+      '<a href="#sec-policy">政策跟踪</a>' +
+    "</nav>" +
+
+    '<section id="sec-price"><h2>广东电价</h2><div class="grid2">' +
       '<div class="card"><h3>峰谷分时电价</h3>' +
         '<div class="kv"><span class="k">峰平谷比价</span><span class="v">' + esc(tou.ratio) + "</span></div>" +
         '<div class="kv"><span class="k">高峰时段</span><span class="v">' + esc(tou.peak) + "</span></div>" +
@@ -412,7 +454,9 @@ function render(d) {
       "</div>" +
     "</div></section>" +
 
-    '<section><h2>🧮 分布式收益测算器</h2>' +
+    '<section id="sec-calc"><h2>🧮 分布式收益测算器</h2>' +
+      '<button class="btn" id="calcToggle" onclick="toggleCalc()">🧮 打开测算器</button>' +
+      '<div id="calcBody" class="collapsed">' +
       '<div class="calc-grid">' +
         '<div class="field"><label>装机容量（kW）</label><input id="c_cap" type="number" value="100" oninput="calc()"></div>' +
         '<div class="field"><label>年利用小时数（h）</label><input id="c_hours" type="number" value="1100" oninput="calc()"></div>' +
@@ -425,21 +469,22 @@ function render(d) {
       "</div>" +
       '<div class="calc-result" id="calcResult"></div>' +
       '<div class="warn">⚠️ 简化估算，仅供参考：未计运维成本、组件衰减与资金成本；自用电按峰30%/平50%/谷20%加权估算。</div>' +
+      "</div>" +
     "</section>" +
 
-    '<section><h2>☀️ 辐照预报（广东·未来7天）</h2><div id="irrBody"><div class="empty">辐照数据加载中…</div></div></section>' +
+    '<section id="sec-irr"><h2>☀️ 辐照预报（广东·未来7天）</h2><div id="irrBody"><div class="empty">辐照数据加载中…</div></div></section>' +
 
-    '<section><h2>每日资讯</h2>' +
+    '<section id="sec-news"><h2>每日资讯</h2>' +
       '<div class="toolbar"><input class="search" id="newsSearch" placeholder="🔍 搜索标题或摘要…" oninput="onSearch(this.value)">' + tabsHtml + "</div>" +
       '<div id="newsList"></div>' +
     "</section>" +
 
-    "<section><h2>产业链价格</h2>" +
+    "<section id=\"sec-chain\"><h2>产业链价格</h2>" +
       '<div id="trendChart"><div class="empty">走势图加载中…</div></div>' +
       scHtml +
       '<div class="note">价格每周对照 InfoLink / 硅业分会报价手动更新；带"预测区间"字样的为机构年度预测，非实时报价。</div></section>' +
 
-    "<section><h2>政策跟踪</h2>" + polHtml + "</section>" +
+    "<section id=\"sec-policy\"><h2>政策跟踪</h2>" + polHtml + "</section>" +
 
     "<footer>数据来源：Google News RSS、量子位、InfoLink、硅业分会、广东电力交易中心、Open-Meteo 等公开渠道<br>" +
     "电价以官方正式文件为准 · 每天早上自动更新</footer>";
