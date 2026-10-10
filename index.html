@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>光伏新能源工作台</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg: #f4f6fa; --card: #ffffff; --text: #1f2937; --muted: #6b7280;
+    --accent: #f59e0b; --accent2: #0ea5e9; --green: #10b981; --line: #e5e7eb;
+  }
+  body { font-family: -apple-system, "PingFang SC", "Microsoft YaHei", "Noto Sans SC", sans-serif;
+         background: var(--bg); color: var(--text); line-height: 1.6; }
+  .wrap { max-width: 980px; margin: 0 auto; padding: 16px 14px 40px; }
+  header.hero { background: linear-gradient(135deg, #1e3a5f, #0e7490); color: #fff;
+    border-radius: 14px; padding: 22px 20px; margin-bottom: 16px; }
+  header.hero h1 { font-size: 22px; margin-bottom: 6px; }
+  header.hero .meta { font-size: 13px; opacity: .85; }
+  header.hero .digest { margin-top: 10px; font-size: 14px; background: rgba(255,255,255,.12);
+    border-radius: 8px; padding: 8px 12px; }
+  section { background: var(--card); border-radius: 14px; padding: 18px; margin-bottom: 16px;
+    box-shadow: 0 1px 3px rgba(0,0,0,.06); }
+  section h2 { font-size: 17px; margin-bottom: 12px; padding-left: 10px;
+    border-left: 4px solid var(--accent); }
+  .grid2 { display: grid; grid-template-columns: 1fr; gap: 12px; }
+  @media (min-width: 720px) { .grid2 { grid-template-columns: 1fr 1fr; } }
+  .card { border: 1px solid var(--line); border-radius: 10px; padding: 14px; }
+  .card h3 { font-size: 15px; margin-bottom: 8px; color: #0e7490; }
+  .kv { display: flex; justify-content: space-between; gap: 10px; padding: 6px 0;
+    border-bottom: 1px dashed var(--line); font-size: 14px; }
+  .kv:last-child { border-bottom: none; }
+  .kv .k { color: var(--muted); flex-shrink: 0; }
+  .kv .v { text-align: right; }
+  .note { font-size: 12px; color: var(--muted); margin-top: 8px; }
+  .news-cat { margin-bottom: 14px; }
+  .news-cat h3 { font-size: 15px; margin-bottom: 8px; }
+  .news-cat h3 .tag { display: inline-block; font-size: 12px; color: #fff; border-radius: 6px;
+    padding: 1px 8px; margin-right: 6px; }
+  .tag-pv { background: #f59e0b; } .tag-st { background: #0ea5e9; }
+  .tag-ne { background: #10b981; } .tag-ai { background: #8b5cf6; }
+  .news-item { padding: 8px 0; border-bottom: 1px solid var(--line); font-size: 14px; }
+  .news-item:last-child { border-bottom: none; }
+  .news-item a { color: var(--text); text-decoration: none; font-weight: 500; }
+  .news-item a:hover { color: #0e7490; text-decoration: underline; }
+  .news-item .sum { color: var(--muted); font-size: 13px; margin-top: 2px; }
+  .news-item .src { font-size: 12px; color: #9ca3af; margin-top: 2px; }
+  table.price { width: 100%; border-collapse: collapse; font-size: 14px; }
+  table.price th, table.price td { padding: 8px 6px; border-bottom: 1px solid var(--line); text-align: left; }
+  table.price th { color: var(--muted); font-weight: 500; font-size: 13px; }
+  table.price td.p { font-weight: 700; color: #b45309; white-space: nowrap; }
+  .pol-item { padding: 8px 0; border-bottom: 1px solid var(--line); font-size: 14px; }
+  .pol-item:last-child { border-bottom: none; }
+  .pol-item a { color: var(--text); text-decoration: none; font-weight: 500; }
+  .pol-item a:hover { color: #0e7490; text-decoration: underline; }
+  .pol-item .sum { color: var(--muted); font-size: 13px; margin-top: 2px; }
+  .pol-item .dt { font-size: 12px; color: #9ca3af; }
+  footer { text-align: center; color: var(--muted); font-size: 12px; padding: 10px; }
+  .loading, .error { text-align: center; padding: 60px 20px; color: var(--muted); }
+  .error { color: #b91c1c; }
+  .empty { color: var(--muted); font-size: 13px; padding: 6px 0; }
+</style>
+</head>
+<body>
+<div class="wrap" id="app">
+  <div class="loading">工作台加载中…</div>
+</div>
+
+<script>
+function esc(s) {
+  return String(s == null ? "" : s)
+    .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;");
+}
+function fmtTime(iso) {
+  try {
+    const d = new Date(iso);
+    const p = n => String(n).padStart(2, "0");
+    return d.getFullYear() + "-" + p(d.getMonth()+1) + "-" + p(d.getDate()) +
+           " " + p(d.getHours()) + ":" + p(d.getMinutes());
+  } catch (e) { return iso || ""; }
+}
+const CAT_TAG = { "光伏": "tag-pv", "储能": "tag-st", "新能源": "tag-ne", "AI": "tag-ai" };
+const CAT_ORDER = ["光伏", "储能", "新能源", "AI"];
+
+function render(d) {
+  const el = document.getElementById("app");
+  const tou = (d.electricity && d.electricity.tou) || {};
+  const fi  = (d.electricity && d.electricity.feedin) || {};
+  const news = d.news || [];
+  const sc = d.supply_chain || [];
+  const pols = d.policies || [];
+
+  let newsHtml = "";
+  CAT_ORDER.forEach(cat => {
+    const items = news.filter(n => n.category === cat);
+    if (!items.length) return;
+    newsHtml += '<div class="news-cat"><h3><span class="tag ' + (CAT_TAG[cat]||"tag-ne") + '">' +
+      esc(cat) + "</span>最新动态</h3>";
+    items.forEach(n => {
+      const link = n.url
+        ? '<a href="' + esc(n.url) + '" target="_blank" rel="noopener">' + esc(n.title) + "</a>"
+        : esc(n.title);
+      newsHtml += '<div class="news-item">' + link +
+        (n.summary ? '<div class="sum">' + esc(n.summary) + "</div>" : "") +
+        '<div class="src">' + esc(n.date || "") + (n.source ? " · " + esc(n.source) : "") + "</div></div>";
+    });
+    newsHtml += "</div>";
+  });
+  if (!newsHtml) newsHtml = '<div class="empty">暂无资讯，等待下次自动更新。</div>';
+
+  let scHtml = "";
+  if (sc.length) {
+    scHtml = '<table class="price"><tr><th>环节</th><th>规格</th><th>价格</th><th>单位</th><th>报价日期</th></tr>';
+    sc.forEach(r => {
+      scHtml += "<tr><td>" + esc(r.item) + "</td><td>" + esc(r.spec) + '</td><td class="p">' +
+        esc(r.price) + "</td><td>" + esc(r.unit) + "</td><td>" + esc(r.date) +
+        (r.source ? "<br><small style='color:#9ca3af'>" + esc(r.source) + "</small>" : "") + "</td></tr>";
+    });
+    scHtml += "</table>";
+  } else {
+    scHtml = '<div class="empty">暂无价格数据。</div>';
+  }
+
+  let polHtml = "";
+  pols.forEach(p => {
+    const link = p.url
+      ? '<a href="' + esc(p.url) + '" target="_blank" rel="noopener">' + esc(p.title) + "</a>"
+      : esc(p.title);
+    polHtml += '<div class="pol-item">' + link +
+      (p.summary ? '<div class="sum">' + esc(p.summary) + "</div>" : "") +
+      '<div class="dt">' + esc(p.date || "") + "</div></div>";
+  });
+  if (!polHtml) polHtml = '<div class="empty">暂无政策记录。</div>';
+
+  el.innerHTML =
+    '<header class="hero"><h1>☀️ 光伏新能源工作台</h1>' +
+    '<div class="meta">数据更新于 ' + esc(fmtTime(d.updated_at)) + "（北京时间）</div>" +
+    (d.digest ? '<div class="digest">📌 ' + esc(d.digest) + "</div>" : "") + "</header>" +
+
+    '<section><h2>广东电价</h2><div class="grid2">' +
+      '<div class="card"><h3>峰谷分时电价</h3>' +
+        '<div class="kv"><span class="k">峰平谷比价</span><span class="v">' + esc(tou.ratio) + "</span></div>" +
+        '<div class="kv"><span class="k">高峰时段</span><span class="v">' + esc(tou.peak) + "</span></div>" +
+        '<div class="kv"><span class="k">低谷时段</span><span class="v">' + esc(tou.valley) + "</span></div>" +
+        '<div class="kv"><span class="k">平段</span><span class="v">' + esc(tou.flat_note) + "</span></div>" +
+        (tou.spread ? '<div class="note">📊 ' + esc(tou.spread) + "</div>" : "") +
+        (tou.example ? '<div class="note">' + esc(tou.example) + "</div>" : "") +
+        (tou.note ? '<div class="note">⚠️ ' + esc(tou.note) + "</div>" : "") +
+      "</div>" +
+      '<div class="card"><h3>余电上网与机制电价</h3>' +
+        '<div class="kv"><span class="k">存量项目</span><span class="v">' + esc(fi.existing) + "</span></div>" +
+        '<div class="kv"><span class="k">增量竞价上限</span><span class="v">' + esc(fi.new_cap) + "</span></div>" +
+        '<div class="kv"><span class="k">现货参考</span><span class="v">' + esc(fi.spot_ref) + "</span></div>" +
+        '<div class="kv"><span class="k">中长期参考</span><span class="v">' + esc(fi.midlong_ref) + "</span></div>" +
+        (fi.green_ref ? '<div class="kv"><span class="k">绿电环境价值</span><span class="v">' + esc(fi.green_ref) + "</span></div>" : "") +
+      "</div>" +
+    "</div></section>" +
+
+    "<section><h2>每日资讯</h2>" + newsHtml + "</section>" +
+    "<section><h2>产业链价格</h2>" + scHtml +
+      '<div class="note">价格每周对照 InfoLink / 硅业分会报价手动更新；带“预测区间”字样的为机构年度预测，非实时报价。</div></section>' +
+    "<section><h2>政策跟踪</h2>" + polHtml + "</section>" +
+
+    "<footer>数据来源：Google News RSS、量子位、InfoLink、硅业分会、广东电力交易中心等公开渠道<br>" +
+    "电价以官方正式文件为准 · 每天早上自动更新</footer>";
+}
+
+async function load() {
+  try {
+    const res = await fetch("data.json", { cache: "no-store" });
+    if (!res.ok) throw new Error("HTTP " + res.status);
+    const d = await res.json();
+    render(d);
+  } catch (e) {
+    document.getElementById("app").innerHTML =
+      '<div class="error">⚠️ 数据加载失败<br><small>请检查网络连接后刷新重试（' +
+      esc(e.message) + "）</small></div>";
+  }
+}
+load();
+</script>
+</body>
+</html>
