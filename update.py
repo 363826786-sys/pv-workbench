@@ -7,6 +7,7 @@
 2. electricity（电价）为政策性静态配置，原样保留 —— 电价政策变化时手动修改下方 ELECTRICITY；
 3. supply_chain（产业链价格）暂无稳定公开的机器可读来源，原样保留旧值和原报价日期，
    不编造新价格 —— 每周对照 InfoLink / 硅业分会报价手动更新 data.json；
+   每次运行会把代表规格的价格快照追加到 history.json（无变化则不追加），供页面画走势图；
 4. policies（政策跟踪）原样保留，新增政策手动追加到 data.json。
 """
 
@@ -26,23 +27,30 @@ feedparser.USER_AGENT = (
 
 BASE_DIR = Path(__file__).resolve().parent
 DATA_FILE = BASE_DIR / "data.json"
+HISTORY_FILE = BASE_DIR / "history.json"
 BEIJING = timezone(timedelta(hours=8))
 
 # ==================== 配置区（用户可改） ====================
 # 每项：(分类, 类型, 内容)
 #   类型 "gnews"：内容为 Google News 搜索关键词（程序自动拼成 RSS 地址）
 #   类型 "rss"  ：内容为直接可用的 RSS/Atom 地址
-# 下面的源已于 2026-10-10 逐个实际请求验证可用；新增前请先本地跑一遍验证。
+# 下面的源已逐个实际请求验证可用；新增前请先本地跑一遍验证。
 FEEDS = [
     ("光伏", "gnews", "光伏"),
+    ("光伏", "gnews", "光伏們"),      # 光伏們公众号文章（经转载被 Google News 收录，已验证 48h 内有更新）
+    ("光伏", "gnews", "索比光伏网"),  # 索比光伏网文章（经转载被 Google News 收录，已验证有近 48h 更新）
     ("储能", "gnews", "储能"),
     ("新能源", "gnews", "新能源 -汽车"),
     ("AI", "gnews", "AI 大模型"),
     ("AI", "rss", "https://www.qbitai.com/feed"),
+    ("招投标", "gnews", "光伏 招标"),
+    ("招投标", "gnews", "光伏 中标"),
+    ("招投标", "gnews", "储能 招标"),
 ]
 
 MAX_PER_CATEGORY = 10
 HOURS = 48
+HISTORY_MAX = 104  # 价格快照最多保留约 2 年
 # ============================================================
 
 # 电价静态配置：政策性内容，变化时手动改这里（脚本每次原样写入 data.json）
@@ -65,7 +73,37 @@ ELECTRICITY = {
         "midlong_ref": "中长期市场均价0.3784元/kWh（2026年上半年）",
         "green_ref": "绿电环境价值均价0.0182元/kWh（其中光伏0.0173）",
     },
+    "agency": {
+        "title": "代理购电价（月度）",
+        "note": "广东电网每月初发布代理购电价表，工商业用户电价随每月代理购电价格浮动；"
+                "具体数值见广东电网当月公告（示例：2026年4月汕头市电价表）",
+        "update_note": "每月初手动更新",
+        "url": "https://www.shantou.gov.cn/attachment/0/150/150864/2524702.pdf",
+    },
+    "spot": {
+        "title": "电力现货参考",
+        "day_ahead": "0.2815元/kWh（2026年上半年日前均价）",
+        "realtime": "0.2675元/kWh（2026年上半年实时均价）",
+        "settle": "0.2690元/kWh（2026年上半年新能源结算均价；显著低于煤电0.3892）",
+        "date_note": "数据为2026年上半年，来源：广东电力交易中心《2026广东电力市场半年报告》",
+        "url": "https://www.sohu.com/a/1071242745_122014422",
+    },
+    "green_trade": {
+        "title": "绿电交易参考",
+        "energy": "0.3763元/kWh（2026年上半年省内绿电电能量均价）",
+        "env_value": "0.0182元/kWh（绿电环境价值均价；其中光伏0.0173）",
+        "date_note": "数据为2026年上半年，来源：广东电力交易中心",
+        "url": "https://www.sohu.com/a/1071242745_122014422",
+    },
 }
+
+# 价格走势追踪的代表规格：(图例key, item关键词, spec关键词)
+CHART_SERIES = [
+    ("组件-TOPCon集中式", "组件", "集中式"),
+    ("硅片-N型G10L", "硅片", "G10L"),
+    ("电池片-TOPCon", "电池片", "TOPCon"),
+    ("硅料-多晶硅", "硅料", "多晶硅"),
+]
 
 
 def gnews_url(keyword):
@@ -102,6 +140,19 @@ def entry_datetime(entry):
     return None
 
 
+def parse_mid(price_str):
+    """把 '0.64-0.70' / '5.5–7.5' / '1.20' 解析为区间中点，解析失败返回 None。"""
+    s = (price_str or "").strip().replace("–", "-").replace("—", "-")
+    parts = [p for p in s.split("-") if p.strip()]
+    try:
+        nums = [float(p) for p in parts]
+    except ValueError:
+        return None
+    if not nums:
+        return None
+    return sum(nums) / len(nums)
+
+
 def fetch_feed(category, kind, content):
     url = gnews_url(content) if kind == "gnews" else content
     try:
@@ -133,6 +184,56 @@ def fetch_feed(category, kind, content):
         })
     print("[INFO] %s <- %.60s... : %d 条（48h内）" % (category, url, len(items)))
     return items
+
+
+def snapshot_prices(supply_chain):
+    """从 supply_chain 提取代表规格的价格快照。"""
+    items = []
+    for key, item_kw, spec_kw in CHART_SERIES:
+        match = None
+        for r in supply_chain:
+            if item_kw in (r.get("item") or "") and spec_kw in (r.get("spec") or ""):
+                match = r
+                break
+        if not match:
+            continue
+        mid = parse_mid(match.get("price"))
+        if mid is None:
+            continue
+        items.append({
+            "key": key,
+            "mid": round(mid, 4),
+            "raw": match.get("price"),
+            "unit": match.get("unit"),
+            "quote_date": match.get("date"),
+        })
+    return items
+
+
+def append_history(supply_chain):
+    """价格快照追加到 history.json；无变化或当天已记则不追加。"""
+    today = datetime.now(BEIJING).strftime("%Y-%m-%d")
+    hist = []
+    if HISTORY_FILE.exists():
+        try:
+            hist = json.loads(HISTORY_FILE.read_text(encoding="utf-8"))
+        except Exception as e:
+            print("[WARN] history.json 解析失败，将重建：%s" % e)
+    snap_items = snapshot_prices(supply_chain)
+    if not snap_items:
+        print("[INFO] 本次无可追踪的价格快照，跳过 history 更新")
+        return
+    if hist:
+        last = hist[-1]
+        last_sig = json.dumps(last.get("items"), ensure_ascii=False, sort_keys=True)
+        new_sig = json.dumps(snap_items, ensure_ascii=False, sort_keys=True)
+        if last.get("date") == today or last_sig == new_sig:
+            print("[INFO] 价格快照无变化，history.json 不追加")
+            return
+    hist.append({"date": today, "items": snap_items})
+    hist = hist[-HISTORY_MAX:]
+    HISTORY_FILE.write_text(json.dumps(hist, ensure_ascii=False, indent=2), encoding="utf-8")
+    print("[OK] history.json 已追加快照：%s，共 %d 期" % (today, len(hist)))
 
 
 def main():
@@ -192,6 +293,8 @@ def main():
     }
     DATA_FILE.write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8")
     print("[OK] data.json 已更新：news %d 条，updated_at=%s" % (len(news), data["updated_at"]))
+
+    append_history(data["supply_chain"])
 
 
 if __name__ == "__main__":

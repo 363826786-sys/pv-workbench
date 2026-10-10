@@ -1,1 +1,551 @@
-{"digest":"广东峰谷价差全国居首，是工商业储能套利最优区域；钙钛矿电池效率27.98%刷新世界纪录；GPT-6与Claude Haiku 5.5同日上新。","electricity":{"feedin":{"existing":"0.453元/kWh（存量项目机制电价＝广东燃煤基准价，136号文广东细则，全国最高一档）","green_ref":"绿电环境价值均价0.0182元/kWh（其中光伏0.0173）","midlong_ref":"中长期市场均价0.3784元/kWh（2026年上半年）","new_cap":"0.4元/kWh（增量项目竞价上限；海上风电竞价上限为燃煤基准价）","spot_ref":"新能源现货结算均价约0.27元/kWh（2026年上半年，广东电力交易中心；显著低于煤电0.3892）"},"tou":{"example":"2026年4月汕头代理购电价表示例（工商业单一制1–10kV，含税）：尖峰1.3950 / 高峰1.1215 / 平段0.6711 / 低谷0.2721 元/kWh","flat_note":"其余时段为平段；平段电价基准取代理购电价格","note":"网传2026年优化征求意见稿口径，以正式文件为准","peak":"10:00–12:00、14:00–19:00（共7小时）","ratio":"1.7 : 1 : 0.38","spread":"2026年9月：珠三角六市最大峰谷价差1.3963元/kWh，全国最高；惠州1.3134、东西两翼1.2103、粤北1.1550，四大片区全部突破1.15","valley":"1:00–8:00、12:00–13:00（新增午间低谷）"}},"news":[{"category":"光伏","date":"2026-03-26","source":"温州日报","summary":"经国家光伏产业计量测试中心认证，首次全面超越所有单结晶硅电池。","title":"温州华柔光电单结钙钛矿电池效率27.98%，刷新世界纪录","url":"https://finance.sina.com.cn/jjxw/2026-03-26/doc-inhshnwy0357115.shtml"},{"category":"储能","date":"2026-09-17","source":"环球网","summary":"2026年二季度海外可再生能源项目中储能项目数量同比+75%，规模首次超过光伏，出海从“设备出口”转向“系统输出”。","title":"中国绿色能源出海：二季度储能项目数量首超光伏","url":"https://www.163.com/dy/article/L74F50590514R9OJ.html"},{"category":"新能源","date":"2026-09-05","source":"网易","summary":"总营收达10.59万亿元，中国企业260家、营收占比51.84%；前十中中国占6席；储能企业营收占比升至23.02%，太阳能降至12.17%，产业向多元融合演进。","title":"2026全球新能源企业500强发布：总营收首破10万亿，中国企业占52%","url":"https://www.163.com/dy/article/L6743H6M0552C2FY.html"},{"category":"AI","date":"2026-10-08","source":"新浪新闻","summary":"ChatGPT可按任务动态生成图表、按钮、表单等可操作界面，从问答转向任务执行入口。","title":"OpenAI发布GPT-6及Intelligent UI","url":"https://news.sina.com.cn/o/2026-10-08/doc-iniunrrk5171763.shtml"},{"category":"AI","date":"2026-10-08","source":"新浪科技","summary":"高频低成本定位，国产大模型的性价比护城河被追平，行业竞争转向“产品+Agent+商业化体系”。","title":"Anthropic发布Claude Haiku 5.5，API降价约90%","url":"https://finance.sina.com.cn/tech/roll/2026-10-08/doc-iniunvxf4344103.shtml"},{"category":"AI","date":"2026-10-09","source":"新浪科技","summary":"聚焦政企数据治理场景，支持全栈信创与私有化部署。","title":"百分点“百思大模型”通过国家生成式AI服务备案","url":"https://finance.sina.com.cn/tech/roll/2026-10-09/doc-iniurfei6902174.shtml"}],"policies":[{"date":"2025-10","summary":"2025年6月1日前并网的存量项目按广东燃煤基准价执行，全国最高一档；增量项目光伏竞价上限0.4元/kWh。","title":"136号文广东实施细则：存量项目机制电价0.453元/kWh","url":"https://c.m.163.com/news/a/KCJ5HVJD05568W0A.html"},{"date":"2026-05","summary":"高峰10:00–12:00、14:00–19:00；低谷1:00–8:00、12:00–13:00；峰平谷比价维持1.7:1:0.38，以正式文件为准。","title":"广东峰谷分时电价优化征求意见稿：新增午间1小时低谷","url":"https://www.163.com/dy/article/KTV31OAS05568W0A.html"},{"date":"2026-01","summary":"2026年初国家发改委、能源局发文，独立新型储能容量电价165–330元/kW·年，与煤电同等待遇。","title":"114号文：独立新型储能纳入容量电价补偿","url":""},{"date":"2025-12-25","summary":"年度双边协商电价0.37214元/kWh；绿电综合电价0.37714元/kWh；煤电容量电价提至165元/kW·年。","title":"广东2026年年度电力交易结果落地","url":"https://finance.sina.com.cn/stock/hkstock/ggscyd/2025-12-25/doc-inhczaki3392151.shtml"},{"date":"2026-09-03","summary":"中长期市场均价0.3784元/kWh；新能源现货结算均价0.2690元/kWh，折价显著；绿电环境价值均价0.0182元/kWh。","title":"广东电力市场2026年半年报","url":"https://www.sohu.com/a/1071242745_122014422"}],"supply_chain":[{"date":"2025-12-17","item":"硅料","price":"5.5–7.5","source":"国金证券","spec":"多晶硅（国金证券2026年预测区间）","unit":"万元/吨"},{"date":"2025-12-25","item":"硅片","price":"1.20","source":"硅业分会","spec":"N型G10L单晶硅片","unit":"元/片"},{"date":"2025-12-25","item":"硅片","price":"1.31","source":"硅业分会","spec":"N型G12R单晶硅片","unit":"元/片"},{"date":"2025-12-25","item":"硅片","price":"1.52","source":"硅业分会","spec":"N型G12单晶硅片","unit":"元/片"},{"date":"2025-12-25","item":"电池片","price":"0.31–0.33","source":"硅业分会","spec":"N型210mm TOPCon","unit":"元/W"},{"date":"2026-01-04","item":"组件","price":"0.64–0.70","source":"InfoLink","spec":"TOPCon集中式","unit":"元/W"},{"date":"2026-01-04","item":"组件","price":"0.66–0.71","source":"InfoLink","spec":"TOPCon分布式","unit":"元/W"},{"date":"2026-01-04","item":"组件","price":"0.76","source":"InfoLink","spec":"HJT","unit":"元/W"},{"date":"2025-12-17","item":"组件","price":"0.88–0.99","source":"国金证券","spec":"一体化组件（国金证券2026年预测区间）","unit":"元/W"}],"updated_at":"2026-10-10T10:05:00+08:00"}
+{
+  "updated_at": "2026-10-10T10:42:41+08:00",
+  "digest": "光伏：首秀意大利国际能源展，昱能科技携全场景光储方案加速南欧市；AI：a16z领投，AI决策模型Jev爆火数周即完成8.7亿融",
+  "electricity": {
+    "tou": {
+      "ratio": "1.7 : 1 : 0.38",
+      "peak": "10:00-12:00、14:00-19:00（共7小时）",
+      "valley": "1:00-8:00、12:00-13:00（新增午间低谷）",
+      "flat_note": "其余时段为平段；平段电价基准取代理购电价格",
+      "note": "网传2026年优化征求意见稿口径，以正式文件为准",
+      "spread": "2026年9月：珠三角六市最大峰谷价差1.3963元/kWh，全国最高；惠州1.3134、东西两翼1.2103、粤北1.1550，四大片区全部突破1.15",
+      "example": "2026年4月汕头代理购电价表示例（工商业单一制1-10kV，含税）：尖峰1.3950 / 高峰1.1215 / 平段0.6711 / 低谷0.2721 元/kWh"
+    },
+    "feedin": {
+      "existing": "0.453元/kWh（存量项目机制电价＝广东燃煤基准价，136号文广东细则，全国最高一档）",
+      "new_cap": "0.4元/kWh（增量项目竞价上限；海上风电竞价上限为燃煤基准价）",
+      "spot_ref": "新能源现货结算均价约0.27元/kWh（2026年上半年，广东电力交易中心；显著低于煤电0.3892）",
+      "midlong_ref": "中长期市场均价0.3784元/kWh（2026年上半年）",
+      "green_ref": "绿电环境价值均价0.0182元/kWh（其中光伏0.0173）"
+    },
+    "agency": {
+      "title": "代理购电价（月度）",
+      "note": "广东电网每月初发布代理购电价表，工商业用户电价随每月代理购电价格浮动；具体数值见广东电网当月公告（示例：2026年4月汕头市电价表）",
+      "update_note": "每月初手动更新",
+      "url": "https://www.shantou.gov.cn/attachment/0/150/150864/2524702.pdf"
+    },
+    "spot": {
+      "title": "电力现货参考",
+      "day_ahead": "0.2815元/kWh（2026年上半年日前均价）",
+      "realtime": "0.2675元/kWh（2026年上半年实时均价）",
+      "settle": "0.2690元/kWh（2026年上半年新能源结算均价；显著低于煤电0.3892）",
+      "date_note": "数据为2026年上半年，来源：广东电力交易中心《2026广东电力市场半年报告》",
+      "url": "https://www.sohu.com/a/1071242745_122014422"
+    },
+    "green_trade": {
+      "title": "绿电交易参考",
+      "energy": "0.3763元/kWh（2026年上半年省内绿电电能量均价）",
+      "env_value": "0.0182元/kWh（绿电环境价值均价；其中光伏0.0173）",
+      "date_note": "数据为2026年上半年，来源：广东电力交易中心",
+      "url": "https://www.sohu.com/a/1071242745_122014422"
+    }
+  },
+  "news": [
+    {
+      "category": "光伏",
+      "title": "首秀意大利国际能源展，昱能科技携全场景光储方案加速南欧市场拓展",
+      "summary": "首秀意大利国际能源展，昱能科技携全场景光储方案加速南欧市场拓展&nbsp;&nbsp;碳索储能网",
+      "source": "碳索储能网",
+      "url": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE5FTjZLb3FDYUFVZ2dQSktrSVg0ZEtZeHpiTDhnaEFsN0hXT3gwQ2hOckhjV0tSRkI4ZDRIWW52N2d0T21uX1lVaEJHejhHaGtRQ0pqYUJtMlB3czJ6bjlYMQ?oc=5",
+      "date": "2026-10-10"
+    },
+    {
+      "category": "光伏",
+      "title": "瞭望·治国理政纪事丨科学规划建设新型能源体系",
+      "summary": "瞭望·治国理政纪事丨科学规划建设新型能源体系&nbsp;&nbsp;光明网",
+      "source": "光明网",
+      "url": "https://news.google.com/rss/articles/CBMiZkFVX3lxTE5qU2xLTldRekMzMFZBcG1MTVh2Ui1zNDRLd1lFWFdUYXBiQkpnNWR5ckt4T0ZOQU8yNm16X0JoM3dGSll5TmowU3N5YjVIY0Vjdzc4YnFhUXc3cS1TYTJsaE1XcHE1dw?oc=5",
+      "date": "2026-10-10"
+    },
+    {
+      "category": "光伏",
+      "title": "全球减贫 中国答卷｜吉尼斯纪录认证！这匹“骏马”真的会发电",
+      "summary": "全球减贫 中国答卷｜吉尼斯纪录认证！这匹“骏马”真的会发电&nbsp;&nbsp;凤凰网",
+      "source": "凤凰网",
+      "url": "https://news.google.com/rss/articles/CBMiTEFVX3lxTE1oaEUzRXdibTF5RTJ1dllxeWQ4M2dHRUt2UFE2V3pqOGFxUFVlU3N0RG5YZV9zQWhTb1ltUV9oX3p6VkJ6RmxWWjZ4WXQ?oc=5",
+      "date": "2026-10-10"
+    },
+    {
+      "category": "光伏",
+      "title": "“绿电”新解法，离网方案再拓展｜恒羲光伏光储动力舱批量发货，移动微电网加速落地",
+      "summary": "“绿电”新解法，离网方案再拓展｜恒羲光伏光储动力舱批量发货，移动微电网加速落地&nbsp;&nbsp;碳索储能网",
+      "source": "碳索储能网",
+      "url": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE5lVHh4OXpiU2R0d1lhUFpORy1vcEtMcGhLQUlKMkFfZVhrN2ZrMFAxR01xUzVZT20yZkI0NVdJaXpPWDhOY1NOUnQ3YTVIUlJsZkNVZXp2NEhiaEV2VnZ2Vw?oc=5",
+      "date": "2026-10-10"
+    },
+    {
+      "category": "光伏",
+      "title": "南昌地铁分布式光伏项目二期工程并网发电",
+      "summary": "南昌地铁分布式光伏项目二期工程并网发电&nbsp;&nbsp;凤凰网",
+      "source": "凤凰网",
+      "url": "https://news.google.com/rss/articles/CBMiSkFVX3lxTE1RdFl1Q1pxVFY3Q0MtZEZNam5sSU5xeU9GWXRHUVIxVjJWMFJMc2l2NVRBenpYNGpSMDJRYVVzNXpaN0lCUHFyakVn?oc=5",
+      "date": "2026-10-10"
+    },
+    {
+      "category": "光伏",
+      "title": "中国能建云南院中标云南勐翁光伏发电项目EPC总承包工程",
+      "summary": "中国能建云南院中标云南勐翁光伏发电项目EPC总承包工程&nbsp;&nbsp;国际太阳能光伏网",
+      "source": "国际太阳能光伏网",
+      "url": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE50NFdNcGhKQThLYmw1Mm1IYjhFcE50b2NnMHV3UnpIUjFnU1lpWlNIbHJzS3R0VHRpaTVEYnJFbEhPcW00TmRia2E4am5MSENRU01pcVVjTzBadFgw?oc=5",
+      "date": "2026-10-10"
+    },
+    {
+      "category": "光伏",
+      "title": "中国能建江苏电建一公司承建的哥伦比亚瓜兰迪光伏项目全容量并网发电",
+      "summary": "中国能建江苏电建一公司承建的哥伦比亚瓜兰迪光伏项目全容量并网发电&nbsp;&nbsp;国际太阳能光伏网",
+      "source": "国际太阳能光伏网",
+      "url": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE5BSVBjQ2xfajhhUC1teEw5a2hvQkFmQlU0aFZleDA2SnRnXzd4SUNMakNMX2dNZFhWMDdvV09JNmlTa0t2M0dWWjFfTDVJaTJ0bjN6Y2VRY3R4VTho?oc=5",
+      "date": "2026-10-10"
+    },
+    {
+      "category": "光伏",
+      "title": "华能澜沧江公司2个光伏发电项目全容量并网发电",
+      "summary": "华能澜沧江公司2个光伏发电项目全容量并网发电&nbsp;&nbsp;国际新能源网",
+      "source": "国际新能源网",
+      "url": "https://news.google.com/rss/articles/CBMiZ0FVX3lxTE0yU2JISTExZ3JfbUJ2SVdlNGxOOXNYYkVWSnZnWUo1Xzc1Sk5Zd0g0N3NaeXpmM2sxQkxTNDNRQ1M2by15aWdpQjJYNUw1eWFLN3hBUFZXSnU5VlJ4djRQc21xMTFncHM?oc=5",
+      "date": "2026-10-10"
+    },
+    {
+      "category": "光伏",
+      "title": "前全球电池片第三龙头成“失信人”，创始人被限制高消费",
+      "summary": "前全球电池片第三龙头成“失信人”，创始人被限制高消费&nbsp;&nbsp;维科号",
+      "source": "维科号",
+      "url": "https://news.google.com/rss/articles/CBMiU0FVX3lxTE5PSU5CTlpwT01jdXVaZFctZXVXUkxMTmNwRE5lX1ZfU3J4Ni1PTUFTZm4waUp5MURYUzUyY2prLWVBSl96TlpZS3dDaXRhUFpxaFpN?oc=5",
+      "date": "2026-10-10"
+    },
+    {
+      "category": "光伏",
+      "title": "大面积钙钛矿太阳能电池光电转换效率创新高",
+      "summary": "大面积钙钛矿太阳能电池光电转换效率创新高&nbsp;&nbsp;科学网—新闻",
+      "source": "科学网—新闻",
+      "url": "https://news.google.com/rss/articles/CBMiZkFVX3lxTFA4eHNZTzlxZHIwSFZFMkZDdE9NXzBzbWJaYTU4ZGJ3VkdDNkh6b0xmSUFfMWpCWDc2UWFERVcxZXFDeTJYaWVDOFMtbVFMYk90TjVZSXNCVVFodF9WVFlRc21Qb3RkUQ?oc=5",
+      "date": "2026-10-10"
+    },
+    {
+      "category": "储能",
+      "title": "规模不低于500MWh！德赛智储与威思顿电气签约，拓展山东储能场景",
+      "summary": "规模不低于500MWh！德赛智储与威思顿电气签约，拓展山东储能场景&nbsp;&nbsp;碳索储能网",
+      "source": "碳索储能网",
+      "url": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE1ibWEwX1VKVnU1Q3FWYzNZYXc3LTViSm5sSzJTY3JvLS1ZTlN0cjdsaXF4TmlMbkVVb0ROc0R5R28yb0Y2SWdmbWVlLVNWQmd1UVoySkpvSGFvNnp3d2pvNw?oc=5",
+      "date": "2026-10-10"
+    },
+    {
+      "category": "储能",
+      "title": "45.5亿雷亚尔资金投向储能，巴西第五届Eco Invest拍卖正式获批",
+      "summary": "45.5亿雷亚尔资金投向储能，巴西第五届Eco Invest拍卖正式获批&nbsp;&nbsp;碳索储能网",
+      "source": "碳索储能网",
+      "url": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE0tNDE0NHd2Sl9OSDVfeFllV1g1Vm0yNjZpN1RzczBMMWFwbVoxeE9kdlRGbFZoSllCX1B0VTVIOTZFUmlvb3ZPanppdlFtdzZ1Vi1oTzVfSmozMmQ0VHI5SA?oc=5",
+      "date": "2026-10-10"
+    },
+    {
+      "category": "储能",
+      "title": "安徽宁国龙潭抽蓄项目尾调通气洞顺利开工",
+      "summary": "安徽宁国龙潭抽蓄项目尾调通气洞顺利开工&nbsp;&nbsp;国际储能网",
+      "source": "国际储能网",
+      "url": "https://news.google.com/rss/articles/CBMiYkFVX3lxTE5zaWp1cVdiWmV1czFqLXUtOTJ0bzctQlJZczJBTXE4d3VINXdLMWsxSG14R1p0M19kZ0FxdDNmS2Q3YXpBUV91X1hzLU1teV9EVzZZZmFqZFhqX0hIczdpWGl3?oc=5",
+      "date": "2026-10-10"
+    },
+    {
+      "category": "储能",
+      "title": "首秀意大利国际能源展，昱能科技携全场景光储方案加速南欧市场拓展",
+      "summary": "首秀意大利国际能源展，昱能科技携全场景光储方案加速南欧市场拓展&nbsp;&nbsp;碳索储能网",
+      "source": "碳索储能网",
+      "url": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE5FTjZLb3FDYUFVZ2dQSktrSVg0ZEtZeHpiTDhnaEFsN0hXT3gwQ2hOckhjV0tSRkI4ZDRIWW52N2d0T21uX1lVaEJHejhHaGtRQ0pqYUJtMlB3czJ6bjlYMQ?oc=5",
+      "date": "2026-10-10"
+    },
+    {
+      "category": "储能",
+      "title": "紫荆捷控与ABB深耕船舶及飞轮储能技术，赋能行业高质量发展",
+      "summary": "紫荆捷控与ABB深耕船舶及飞轮储能技术，赋能行业高质量发展&nbsp;&nbsp;碳索储能网",
+      "source": "碳索储能网",
+      "url": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE51bGpWMFRhSE0wYVdRQl91eUlDSG05RW5tYXRudHM1WjM0MXRiRVZPMXZFbWJMcW5IX1pmVVFnQlc4d1lBaFUxaFVIcm1neFBWak1wYzB0aTBBZmtxSTZNaA?oc=5",
+      "date": "2026-10-10"
+    },
+    {
+      "category": "储能",
+      "title": "华电新乡发电有限公司调频储能EPC总承包项目招标公告发布",
+      "summary": "华电新乡发电有限公司调频储能EPC总承包项目招标公告发布&nbsp;&nbsp;碳索储能网",
+      "source": "碳索储能网",
+      "url": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE8wMWtEU3otbmg4cjZJcWJiT2dXVHpiSkhCVlpaQzYtSlFiY1hXWmJBdFZ4ZXB2Q1V5SXMydURCV3ZRZ2JkOGM4UkhrUlpGRDJ3VkREMVJ2OHpyV1lNUHBMcw?oc=5",
+      "date": "2026-10-10"
+    },
+    {
+      "category": "储能",
+      "title": "衡水市桃城区饶先（河北）新能源100MW超容锂电混合独立储能试点项目EPC总承包工程中标候选人公示",
+      "summary": "衡水市桃城区饶先（河北）新能源100MW超容锂电混合独立储能试点项目EPC总承包工程中标候选人公示&nbsp;&nbsp;碳索储能网",
+      "source": "碳索储能网",
+      "url": "https://news.google.com/rss/articles/CBMiYEFVX3lxTFAtTmJKT3VIMkVpVVNMNmo5M3l2T0IzN2sySk05T2RMSnh6V1oweDZCd1dJLWYxdXdxZ3YwaVNaWm9BVjg2cEJIcUVqUkdnaTlzd0FlcUp6VEVJWkZFcS10aw?oc=5",
+      "date": "2026-10-10"
+    },
+    {
+      "category": "储能",
+      "title": "中国首个百兆瓦级二氧化碳储能电站发电",
+      "summary": "中国首个百兆瓦级二氧化碳储能电站发电&nbsp;&nbsp;见道网",
+      "source": "见道网",
+      "url": "https://news.google.com/rss/articles/CBMiVEFVX3lxTE5aRmthOFZEWEFjTl9rNngtOHh2dHprOWNiSnhScWcwekxYLXg2el9rVzdCLUFSRlc2RERtTjhSVFVSQzdWNUoxZzdoSFJLRVdGeFRPSA?oc=5",
+      "date": "2026-10-10"
+    },
+    {
+      "category": "储能",
+      "title": "“绿电”新解法，离网方案再拓展｜恒羲光伏光储动力舱批量发货，移动微电网加速落地",
+      "summary": "“绿电”新解法，离网方案再拓展｜恒羲光伏光储动力舱批量发货，移动微电网加速落地&nbsp;&nbsp;碳索储能网",
+      "source": "碳索储能网",
+      "url": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE5lVHh4OXpiU2R0d1lhUFpORy1vcEtMcGhLQUlKMkFfZVhrN2ZrMFAxR01xUzVZT20yZkI0NVdJaXpPWDhOY1NOUnQ3YTVIUlJsZkNVZXp2NEhiaEV2VnZ2Vw?oc=5",
+      "date": "2026-10-10"
+    },
+    {
+      "category": "储能",
+      "title": "从零攻坚 精准定向 | 水电十二局松阳超深竖井VBE导向系统开创竖井测量新范式",
+      "summary": "从零攻坚 精准定向 | 水电十二局松阳超深竖井VBE导向系统开创竖井测量新范式&nbsp;&nbsp;碳索储能网",
+      "source": "碳索储能网",
+      "url": "https://news.google.com/rss/articles/CBMiYEFVX3lxTFBCZkJhcWtuQWlNYlAtOURJTm1TeWNtZDJ5RURTR0x1WWlsNWd3TzRBeTFMckdzMGUtUF9HT2JyVFUtV015TGxkVkFQUjEzQVZSN1V3azJySGMyc0p4NWNtQQ?oc=5",
+      "date": "2026-10-10"
+    },
+    {
+      "category": "新能源",
+      "title": "【校招】国家能源集团2027校园招聘 - www.gdshe.org",
+      "summary": "【校招】国家能源集团2027校园招聘&nbsp;&nbsp;www.gdshe.org",
+      "source": "",
+      "url": "https://news.google.com/rss/articles/CBMiUkFVX3lxTE9oUjJuZDF5b0o0UEtESExxRzRqU2tNNHlHdE84eUV5Wks2QkRHZldzeTVJUFItNm9LUFRicGZkaXNaMWxXRlVZdm9VV3RwN0I2emc?oc=5",
+      "date": "2026-10-10"
+    },
+    {
+      "category": "新能源",
+      "title": "南方电网、国家能源集团与中国科学院签署战略合作协议 - https://www.gdshe.org/",
+      "summary": "南方电网、国家能源集团与中国科学院签署战略合作协议&nbsp;&nbsp;https://www.gdshe.org/",
+      "source": "",
+      "url": "https://news.google.com/rss/articles/CBMiUkFVX3lxTE9ZLVQxN3ZxbTdPZkJBVlRMRzFjeTNybFBpcE9yUjM2aWloODAtWkxrU0pRZFQxWnk3cXpjbEZpeWZoR1ExclNDM3FKN05adDNKNWc?oc=5",
+      "date": "2026-10-10"
+    },
+    {
+      "category": "新能源",
+      "title": "里程碑时刻！比亚迪第15万台新能源商用车下线",
+      "summary": "里程碑时刻！比亚迪第15万台新能源商用车下线&nbsp;&nbsp;搜狐网",
+      "source": "搜狐网",
+      "url": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxOeVliQWJzMzZXaEgtcjhobHh3VHE3aGFjM0N3ZHJSRjdfcUM2ZXF0MWtnMEpaMTdmRjNEWHlTVmpHX3dhNDBqS2JPTnJvMjl6SmdCNVJSRml6WFdfNmhNNTJRekk5S05hQTE3TjBUMk1uLWlnTmZyQWJRNWRpU1V0c0xJNHJVR2xz?oc=5",
+      "date": "2026-10-10"
+    },
+    {
+      "category": "新能源",
+      "title": "衡水市桃城区饶先（河北）新能源100MW超容锂电混合独立储能试点项目EPC总承包工程中标候选人公示",
+      "summary": "衡水市桃城区饶先（河北）新能源100MW超容锂电混合独立储能试点项目EPC总承包工程中标候选人公示&nbsp;&nbsp;碳索储能网",
+      "source": "碳索储能网",
+      "url": "https://news.google.com/rss/articles/CBMiYEFVX3lxTFAtTmJKT3VIMkVpVVNMNmo5M3l2T0IzN2sySk05T2RMSnh6V1oweDZCd1dJLWYxdXdxZ3YwaVNaWm9BVjg2cEJIcUVqUkdnaTlzd0FlcUp6VEVJWkZFcS10aw?oc=5",
+      "date": "2026-10-10"
+    },
+    {
+      "category": "新能源",
+      "title": "岚县召开新兴产业发展推进会依托绿电优势 培育未来产业新动能",
+      "summary": "岚县召开新兴产业发展推进会依托绿电优势 培育未来产业新动能&nbsp;&nbsp;搜狐网",
+      "source": "搜狐网",
+      "url": "https://news.google.com/rss/articles/CBMiiwFBVV95cUxOQmRaTmtTMWU1enZfRjBWaDR5YmZfVW5kdTlPbTRMcjZSdXBlQTVUTUQ4em9oNHVDbXJSaFhaMFVjOXQ3OG93UnN4aVNxYjQxMG9lbDNjc3dpWmxIa21sT085VEQ5a29KSTlsTHM0UTFBSGdwZHR0ZXpIYXl4MW90QUxWMk1DdXpUXzFF?oc=5",
+      "date": "2026-10-10"
+    },
+    {
+      "category": "新能源",
+      "title": "比亚迪第15万辆新能源商用车下线",
+      "summary": "比亚迪第15万辆新能源商用车下线&nbsp;&nbsp;搜狐网",
+      "source": "搜狐网",
+      "url": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxPWElzR0F2T2tIMmlWaXlibWtvOUlHMHIxWU9jSU1tTUZfbzZHclA3RmwwZmphVmYyZE82OFMzbVZYbEd6SjZwXzk4WXFQTGo2b1RYcy15VXU2ajE0Q0JqOUVPOTFZdk1PWGRFSGk3WGo3TV81aUVIakJrNVkwM1hHME1aeE4xOE1u?oc=5",
+      "date": "2026-10-10"
+    },
+    {
+      "category": "新能源",
+      "title": "国家能源局：我国新能源和可再生能源发展总体保持平稳态势",
+      "summary": "国家能源局：我国新能源和可再生能源发展总体保持平稳态势&nbsp;&nbsp;搜狐网",
+      "source": "搜狐网",
+      "url": "https://news.google.com/rss/articles/CBMijAFBVV95cUxOR1pQVU1JVmhPSElOM2lLeW5TSkVsbEc0UXhIbG5JYWRpT3VTZ21sbUJJZGJOUjU4ZjFQM2RXNEdyWTZOMkFrSUhXYURrTl9wZ3JoT0RDeXF6WU92OHRWMkRwNFZzMmtFa3NwalNMdy1TMDF6azU0NFZkOXU1QzZtbU44VElzTEtpUTJhdA?oc=5",
+      "date": "2026-10-10"
+    },
+    {
+      "category": "新能源",
+      "title": "浙江电网侧储能正式进入现货市场",
+      "summary": "浙江电网侧储能正式进入现货市场&nbsp;&nbsp;煤炭资源网",
+      "source": "煤炭资源网",
+      "url": "https://news.google.com/rss/articles/CBMiZEFVX3lxTE8xeGpRQ0w3LWRvNlB3ZHluN0Q2aHBuZXpWR21QNzUxcjdtRXhaS2hMYjNxcFVLVXYtZHhGdUlWVndaWFgxQ0VYd00wOEQybGVuMm10ckdhMTFYcUd3TzZTRzNHc2M?oc=5",
+      "date": "2026-10-10"
+    },
+    {
+      "category": "新能源",
+      "title": "青海新型电力系统研究中心组建成立",
+      "summary": "青海新型电力系统研究中心组建成立&nbsp;&nbsp;新浪网",
+      "source": "新浪网",
+      "url": "https://news.google.com/rss/articles/CBMiggFBVV95cUxOTmJuc1AxUTg5MGVvMGw3WllPNXNEd3pyNjVPNDd5SEtCS05Zbl9sTWRTN1dYWWNFUVpUZkEzM3JNemJWLTZxYnNEb3ZWR3NIbHF6S3M4S1B6RWZ3dEFsWFlNNXhFcEE0anJtRlpKVmxjOU1Xd2ZFdnp5V3VWb0c2dWRB?oc=5",
+      "date": "2026-10-10"
+    },
+    {
+      "category": "新能源",
+      "title": "华电新能（600930.SH）新增一起对外投资，被投资公司为华电（丘北）新能源发电有限公司_公司新闻",
+      "summary": "华电新能（600930.SH）新增一起对外投资，被投资公司为华电（丘北）新能源发电有限公司_公司新闻&nbsp;&nbsp;证券之星",
+      "source": "证券之星",
+      "url": "https://news.google.com/rss/articles/CBMiZEFVX3lxTE14RjEzNmhoaU9LekY0OXhxWXZnZ21kM2pMLWVrVkxfclJZclBNbk5KU1lLZ0tnN0xsOWVEeVBHWmZjTHprRVktbDhWRy1HbjU4bXVaWFljcVRtWHZycU5lZFktalI?oc=5",
+      "date": "2026-10-10"
+    },
+    {
+      "category": "AI",
+      "title": "a16z领投，AI决策模型Jev爆火数周即完成8.7亿融资，估值75亿美元",
+      "summary": "a16z领投，AI决策模型Jev爆火数周即完成8.7亿融资，估值75亿美元&nbsp;&nbsp;华尔街见闻",
+      "source": "华尔街见闻",
+      "url": "https://news.google.com/rss/articles/CBMiU0FVX3lxTE5YbFI5eVNRQlZWSnFQOFNyWkRkVWkwenFMcVV2NE5ZZGZIbW9PTnpqamxOS2FEcnF2cGRDTURGajVmQUxHUm5RQWd0YkVNbWZrWXAw?oc=5",
+      "date": "2026-10-10"
+    },
+    {
+      "category": "AI",
+      "title": "《通用大模型人气周榜TOP20》NO.3：豆包首次登顶 ChatGPT Gemini等海外模型集体回落",
+      "summary": "《通用大模型人气周榜TOP20》NO.3：豆包首次登顶 ChatGPT Gemini等海外模型集体回落&nbsp;&nbsp;搜狐网",
+      "source": "搜狐网",
+      "url": "https://news.google.com/rss/articles/CBMijAFBVV95cUxPWW82eWNhanZPTDRReU1lVmMtQlROV2twSkVFN1ViV1oxZl9nUm5rOUl0S1V3Qlg0YkNBekhLMV91ZHh3ZDBOQ3RvSGhBaTE1SzRJTXZwSUppZ3ZETGhDckwwekJHUDV5YkpZMFNtUFltVEFxakJHeVFJR0VYcUFyTG1iRXAzaTF1Q3NicQ?oc=5",
+      "date": "2026-10-10"
+    },
+    {
+      "category": "AI",
+      "title": "硬件投入降低40%、标注成本降低90%以上，星际大模型重构工业视觉降本逻辑｜2026人工智能产业大会",
+      "summary": "硬件投入降低40%、标注成本降低90%以上，星际大模型重构工业视觉降本逻辑｜2026人工智能产业大会&nbsp;&nbsp;齐鲁网",
+      "source": "齐鲁网",
+      "url": "https://news.google.com/rss/articles/CBMidEFVX3lxTE95QnhXUkdRUzlIRGtReG1kMDdpdGFDeUhZRXQ4RG9PcnV5ZWRnMHdlR0ZyVU9RYWNiNFluRFNLUjdZeWxidXVZak8zOFFVdlNXV1pYeTJRNWp5MFJucklYZWhlYjl3ZzdNdUg2R2pNdU05TkJP?oc=5",
+      "date": "2026-10-10"
+    },
+    {
+      "category": "AI",
+      "title": "AI时代的黑客攻击：矛变强了，盾还没跟上",
+      "summary": "AI时代的黑客攻击：矛变强了，盾还没跟上&nbsp;&nbsp;36Kr",
+      "source": "36Kr",
+      "url": "https://news.google.com/rss/articles/CBMiS0FVX3lxTE5CTXJ5ejQ5U2lnS2ZDZ1VmOWlreXNDRTREVnFZUnhRT3JQTVo0S1NMaUY4RDJrc0lGSmtpR2Fyb0EwcVpQV2tzczdjOA?oc=5",
+      "date": "2026-10-10"
+    },
+    {
+      "category": "AI",
+      "title": "Anthropic发布Claude Haiku 5.5，OpenAI上线GPT-6免费层，海外大模型价格战转向小模型",
+      "summary": "Anthropic发布Claude Haiku 5.5，OpenAI上线GPT-6免费层，海外大模型价格战转向小模型&nbsp;&nbsp;虎嗅网",
+      "source": "虎嗅网",
+      "url": "https://news.google.com/rss/articles/CBMiVEFVX3lxTE03X2dkeWlNaDN4ckllX0hsUHRtWFl5eHF4SU8zWXVzaXNaSVR1ekVDQjlTTUZucE5saXgtLVdVVVo5SERGLXM3WFcwZ0lVVzJ1QVQ5Wg?oc=5",
+      "date": "2026-10-10"
+    },
+    {
+      "category": "AI",
+      "title": "青岛港的AI突围：全国首个港口大模型诞生记_国内经济",
+      "summary": "青岛港的AI突围：全国首个港口大模型诞生记_国内经济&nbsp;&nbsp;证券之星",
+      "source": "证券之星",
+      "url": "https://news.google.com/rss/articles/CBMiZEFVX3lxTE5kNEU4bG9qTTlSR0I2NFV0dENMSUJHZFp5RVRINEkzWmEyOC1fUHFwc1JBOV9Vckl4dXBYZmdQWG1XeFpuMmlxa2tWcUd1OEVDRUw5OWVqeW9YX1RUcWlwaDFpR18?oc=5",
+      "date": "2026-10-10"
+    },
+    {
+      "category": "AI",
+      "title": "大普微10月9日回应AI算力话题：在手订单充足，加快PCIe 6.0等前沿产品研发_公司新闻",
+      "summary": "大普微10月9日回应AI算力话题：在手订单充足，加快PCIe 6.0等前沿产品研发_公司新闻&nbsp;&nbsp;证券之星",
+      "source": "证券之星",
+      "url": "https://news.google.com/rss/articles/CBMiYkFVX3lxTE96T1pIa19SYUkwa0tlWTJHaDFJQ1FkbnowbnZpS2ltb2RQME5qdlpCVWV4NTY3YXdseHVuQTVDNGMzdjFBeUVFa1VNV1I4QnRhdm9mVTlNaFc5STN1bG1XYi1n?oc=5",
+      "date": "2026-10-10"
+    },
+    {
+      "category": "AI",
+      "title": "苏博特10月9日回应AI大模型话题：砼真砼知已试点南京北站_公司新闻",
+      "summary": "苏博特10月9日回应AI大模型话题：砼真砼知已试点南京北站_公司新闻&nbsp;&nbsp;证券之星",
+      "source": "证券之星",
+      "url": "https://news.google.com/rss/articles/CBMiYkFVX3lxTE1hY21oVzJCMjFkU2lnMVF1X1FLT2R1cnRBcXFDSjIydmlwYXRBQUJmLWFENFhfVDVLazVhYWViclBBQXJqWTVrS0oteVA4TDU5YWl6bGVMZ1hTM3VGMkxJOUhB?oc=5",
+      "date": "2026-10-10"
+    },
+    {
+      "category": "AI",
+      "title": "大模型要“读懂”科学需要怎样的科技语料？",
+      "summary": "大模型要“读懂”科学需要怎样的科技语料？&nbsp;&nbsp;中国新闻网",
+      "source": "中国新闻网",
+      "url": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE9MUXNHRGZaNDc3aGhNd2I3UzF6UlVqYW9DN0M4TjBPdm1YNlUxLTJVdUNEN1RXSWx5S3g4V0MyRWl3alNZeGVRTkx3cF9nNGxjc2NfWURoem5Xa19nWkNEMm1Cb19sb211?oc=5",
+      "date": "2026-10-10"
+    },
+    {
+      "category": "AI",
+      "title": "日本右翼向AI大模型“投毒”：将七七事变称为“日中军事冲突”，南京大屠杀淡化为“南京陷落”，外交部：用心险恶，必须共同抵制",
+      "summary": "日本右翼向AI大模型“投毒”：将七七事变称为“日中军事冲突”，南京大屠杀淡化为“南京陷落”，外交部：用心险恶，必须共同抵制&nbsp;&nbsp;搜狐网",
+      "source": "搜狐网",
+      "url": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxNVDVFWjQ0WElFeXNoczE1M29pRXRwMHRWNmtrR3lJNFNrVVBlc3hDYlRwNTZ4TFZCTDJpakhYeWQtM2FQejd1c012QzVaMUhCRk1VaHp0U21IbGxJdGYzcmtqNnpyNjk2a2ozV1p5VEpoakVrMTM5bmZPNHFTZW1wbGZLaHU5OElv?oc=5",
+      "date": "2026-10-09"
+    },
+    {
+      "category": "招投标",
+      "title": "华电新乡发电有限公司调频储能EPC总承包项目招标公告发布",
+      "summary": "华电新乡发电有限公司调频储能EPC总承包项目招标公告发布&nbsp;&nbsp;碳索储能网",
+      "source": "碳索储能网",
+      "url": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE8wMWtEU3otbmg4cjZJcWJiT2dXVHpiSkhCVlpaQzYtSlFiY1hXWmJBdFZ4ZXB2Q1V5SXMydURCV3ZRZ2JkOGM4UkhrUlpGRDJ3VkREMVJ2OHpyV1lNUHBMcw?oc=5",
+      "date": "2026-10-10"
+    },
+    {
+      "category": "招投标",
+      "title": "衡水市桃城区饶先（河北）新能源100MW超容锂电混合独立储能试点项目EPC总承包工程中标候选人公示",
+      "summary": "衡水市桃城区饶先（河北）新能源100MW超容锂电混合独立储能试点项目EPC总承包工程中标候选人公示&nbsp;&nbsp;碳索储能网",
+      "source": "碳索储能网",
+      "url": "https://news.google.com/rss/articles/CBMiYEFVX3lxTFAtTmJKT3VIMkVpVVNMNmo5M3l2T0IzN2sySk05T2RMSnh6V1oweDZCd1dJLWYxdXdxZ3YwaVNaWm9BVjg2cEJIcUVqUkdnaTlzd0FlcUp6VEVJWkZFcS10aw?oc=5",
+      "date": "2026-10-10"
+    },
+    {
+      "category": "招投标",
+      "title": "阳泉百顺联郊区400MW/800MWh储能项目EPC总承包中标候选人公示",
+      "summary": "阳泉百顺联郊区400MW/800MWh储能项目EPC总承包中标候选人公示&nbsp;&nbsp;碳索储能网",
+      "source": "碳索储能网",
+      "url": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE9US3FYMzg2ajJlaDY0eTcwbDdfT2RZNUpJTjNwdkNSaGlqTFRwdEloSmt4MVRCNDdhRHE5N2Y2UThrTmpyLV96ODh2R2VPX2UxRGg5eENveVRrMHZWbzFuRQ?oc=5",
+      "date": "2026-10-10"
+    },
+    {
+      "category": "招投标",
+      "title": "中国能建云南院中标云南勐翁光伏发电项目EPC总承包工程",
+      "summary": "中国能建云南院中标云南勐翁光伏发电项目EPC总承包工程&nbsp;&nbsp;国际太阳能光伏网",
+      "source": "国际太阳能光伏网",
+      "url": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE50NFdNcGhKQThLYmw1Mm1IYjhFcE50b2NnMHV3UnpIUjFnU1lpWlNIbHJzS3R0VHRpaTVEYnJFbEhPcW00TmRia2E4am5MSENRU01pcVVjTzBadFgw?oc=5",
+      "date": "2026-10-10"
+    },
+    {
+      "category": "招投标",
+      "title": "中标 | 0.9025~0.9113元/Wh！山西阳泉400MW/800MWh储能项目EPC总承包中标候选人公示！",
+      "summary": "中标 | 0.9025~0.9113元/Wh！山西阳泉400MW/800MWh储能项目EPC总承包中标候选人公示！&nbsp;&nbsp;国际储能网",
+      "source": "国际储能网",
+      "url": "https://news.google.com/rss/articles/CBMiYEFVX3lxTFBqQmt1cGRmSU4za3d6Yy1GX2RvSWlKUERSQVhHUmh1OHdOREN4T1Z0THZSTmRyLTluZ1pMZGJoMkdudzlKLThaRE9mbzlzbkFYamRHZEEyWDFTdjNUU0o3Rg?oc=5",
+      "date": "2026-10-10"
+    },
+    {
+      "category": "招投标",
+      "title": "0.665~0.77元/W，中电建、华电19GW光伏组件集采开标",
+      "summary": "0.665~0.77元/W，中电建、华电19GW光伏组件集采开标&nbsp;&nbsp;搜狐网",
+      "source": "搜狐网",
+      "url": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxOMFQ4c0Jma2FJd2xtd0RrdWxBby1TaG5DMnlMZHBNNFFUcS1RWDFHa2lzUlFaSVotTnJlbjZDSDloenlKV0NMNGdJY3BRaWNScUtqblA2X0Z4cDdwZkhSTnduWThMYlE1eE1zMjlyXzJnQldlVHpfR1ZQODczV1p1a1Fyb1R5MHJK?oc=5",
+      "date": "2026-10-09"
+    },
+    {
+      "category": "招投标",
+      "title": "法国太阳能招标结果：价格降至60欧元/兆瓦时和75欧元/兆瓦时 - 新闻和统计",
+      "summary": "法国太阳能招标结果：价格降至60欧元/兆瓦时和75欧元/兆瓦时 - 新闻和统计&nbsp;&nbsp;IndexBox",
+      "source": "IndexBox",
+      "url": "https://news.google.com/rss/articles/CBMisgFBVV95cUxPandiUUU0NXVSX2ZvYkpKRk5keVVoVk1jaVFycl93aHNjMmhjc2FEYW8wUS1NQXlVRHBOcTdqaF9TTmlEN2RiX01mdTBXQUxlbVRVTDVRQmVKM0E5UUx3ejJDLUZBOVBhaE5UdmZOYUhpZGZpRmlNU1YxV1hPWVNMMUdyQlBuTXJrX1R4RFFxNkZTR2dfd0dYX1ZNX2MySEFUbHdQay1Zd3FKYWRxTV9SRWFR?oc=5",
+      "date": "2026-10-09"
+    },
+    {
+      "category": "招投标",
+      "title": "华电5GW光伏组件集采开标：26家企业竞标，最低报价0.665元/W，最高0.75元/W - https://www.gessey.com/",
+      "summary": "华电5GW光伏组件集采开标：26家企业竞标，最低报价0.665元/W，最高0.75元/W&nbsp;&nbsp;https://www.gessey.com/",
+      "source": "",
+      "url": "https://news.google.com/rss/articles/CBMiT0FVX3lxTFBYNWZldlNCSXBhOHIxcVBMY21qb2NlVzZCMkZGUWVPeTFrQXIyVmZzVThjMzhyS1NWd0k2aFp2clFnNlA0SG9SbXkxMl9tOUE?oc=5",
+      "date": "2026-10-09"
+    },
+    {
+      "category": "招投标",
+      "title": "0.69~0.788元/W，中能建15GW组件集采开标！",
+      "summary": "0.69~0.788元/W，中能建15GW组件集采开标！&nbsp;&nbsp;SOLARZOOM",
+      "source": "SOLARZOOM",
+      "url": "https://news.google.com/rss/articles/CBMiV0FVX3lxTFBrcHhOWEpVS1VmdDNJUnNrcm5yWmc1dHhUUTEtWFZyZHJkM2NkaDh5b2lCMmtqLVlHZEwtOUs5U3FUcWcxa0RHbE1nOEtFb0dxZW82VW5HMA?oc=5",
+      "date": "2026-10-09"
+    },
+    {
+      "category": "招投标",
+      "title": "2.98GWh！中核储能集采落定，六企入围-招投标 - CPEM全国电力设备管理网",
+      "summary": "2.98GWh！中核储能集采落定，六企入围-招投标&nbsp;&nbsp;CPEM全国电力设备管理网",
+      "source": "",
+      "url": "https://news.google.com/rss/articles/CBMiVEFVX3lxTE9GUFNpbEdRb2NlMV84aHMtdThtVy1EUXdyanhpT0RhMFF4cFM1TE02WUtMN0h6QjZqRkc3dmZ6WWI1aDl0Q2dHVUxjOVRVbUM0TTRIYQ?oc=5",
+      "date": "2026-10-09"
+    }
+  ],
+  "supply_chain": [
+    {
+      "date": "2025-12-17",
+      "item": "硅料",
+      "price": "5.5–7.5",
+      "source": "国金证券",
+      "spec": "多晶硅（国金证券2026年预测区间）",
+      "unit": "万元/吨"
+    },
+    {
+      "date": "2025-12-25",
+      "item": "硅片",
+      "price": "1.20",
+      "source": "硅业分会",
+      "spec": "N型G10L单晶硅片",
+      "unit": "元/片"
+    },
+    {
+      "date": "2025-12-25",
+      "item": "硅片",
+      "price": "1.31",
+      "source": "硅业分会",
+      "spec": "N型G12R单晶硅片",
+      "unit": "元/片"
+    },
+    {
+      "date": "2025-12-25",
+      "item": "硅片",
+      "price": "1.52",
+      "source": "硅业分会",
+      "spec": "N型G12单晶硅片",
+      "unit": "元/片"
+    },
+    {
+      "date": "2025-12-25",
+      "item": "电池片",
+      "price": "0.31–0.33",
+      "source": "硅业分会",
+      "spec": "N型210mm TOPCon",
+      "unit": "元/W"
+    },
+    {
+      "date": "2026-01-04",
+      "item": "组件",
+      "price": "0.64–0.70",
+      "source": "InfoLink",
+      "spec": "TOPCon集中式",
+      "unit": "元/W"
+    },
+    {
+      "date": "2026-01-04",
+      "item": "组件",
+      "price": "0.66–0.71",
+      "source": "InfoLink",
+      "spec": "TOPCon分布式",
+      "unit": "元/W"
+    },
+    {
+      "date": "2026-01-04",
+      "item": "组件",
+      "price": "0.76",
+      "source": "InfoLink",
+      "spec": "HJT",
+      "unit": "元/W"
+    },
+    {
+      "date": "2025-12-17",
+      "item": "组件",
+      "price": "0.88–0.99",
+      "source": "国金证券",
+      "spec": "一体化组件（国金证券2026年预测区间）",
+      "unit": "元/W"
+    }
+  ],
+  "policies": [
+    {
+      "date": "2025-10",
+      "summary": "2025年6月1日前并网的存量项目按广东燃煤基准价执行，全国最高一档；增量项目光伏竞价上限0.4元/kWh。",
+      "title": "136号文广东实施细则：存量项目机制电价0.453元/kWh",
+      "url": "https://c.m.163.com/news/a/KCJ5HVJD05568W0A.html"
+    },
+    {
+      "date": "2026-05",
+      "summary": "高峰10:00–12:00、14:00–19:00；低谷1:00–8:00、12:00–13:00；峰平谷比价维持1.7:1:0.38，以正式文件为准。",
+      "title": "广东峰谷分时电价优化征求意见稿：新增午间1小时低谷",
+      "url": "https://www.163.com/dy/article/KTV31OAS05568W0A.html"
+    },
+    {
+      "date": "2026-01",
+      "summary": "2026年初国家发改委、能源局发文，独立新型储能容量电价165–330元/kW·年，与煤电同等待遇。",
+      "title": "114号文：独立新型储能纳入容量电价补偿",
+      "url": ""
+    },
+    {
+      "date": "2025-12-25",
+      "summary": "年度双边协商电价0.37214元/kWh；绿电综合电价0.37714元/kWh；煤电容量电价提至165元/kW·年。",
+      "title": "广东2026年年度电力交易结果落地",
+      "url": "https://finance.sina.com.cn/stock/hkstock/ggscyd/2025-12-25/doc-inhczaki3392151.shtml"
+    },
+    {
+      "date": "2026-09-03",
+      "summary": "中长期市场均价0.3784元/kWh；新能源现货结算均价0.2690元/kWh，折价显著；绿电环境价值均价0.0182元/kWh。",
+      "title": "广东电力市场2026年半年报",
+      "url": "https://www.sohu.com/a/1071242745_122014422"
+    }
+  ]
+}
