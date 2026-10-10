@@ -4,6 +4,7 @@
 
 工作方式：
 1. 从下方【配置区】的 RSS 源拉取近 48 小时资讯，按分类写入 data.json 的 news；
+   Bing 新闻 RSS 自带发布者原文直链（国内可直接打开），无需翻墙；
 2. electricity（电价）为政策性静态配置，原样保留 —— 电价政策变化时手动修改下方 ELECTRICITY；
 3. supply_chain（产业链价格）暂无稳定公开的机器可读来源，原样保留旧值和原报价日期，
    不编造新价格 —— 每周对照 InfoLink / 硅业分会报价手动更新 data.json；
@@ -32,20 +33,21 @@ BEIJING = timezone(timedelta(hours=8))
 
 # ==================== 配置区（用户可改） ====================
 # 每项：(分类, 类型, 内容)
-#   类型 "gnews"：内容为 Google News 搜索关键词（程序自动拼成 RSS 地址）
+#   类型 "bing"：内容为 Bing 新闻搜索关键词（程序自动拼成 RSS 地址）
+#   Bing RSS 自带发布者原文直链（国内可直接打开），无需翻墙
 #   类型 "rss"  ：内容为直接可用的 RSS/Atom 地址
 # 下面的源已逐个实际请求验证可用；新增前请先本地跑一遍验证。
 FEEDS = [
-    ("光伏", "gnews", "光伏"),
-    ("光伏", "gnews", "光伏們"),      # 光伏們公众号文章（经转载被 Google News 收录，已验证 48h 内有更新）
-    ("光伏", "gnews", "索比光伏网"),  # 索比光伏网文章（经转载被 Google News 收录，已验证有近 48h 更新）
-    ("储能", "gnews", "储能"),
-    ("新能源", "gnews", "新能源 -汽车"),
-    ("AI", "gnews", "AI 大模型"),
+    ("光伏", "bing", "光伏"),
+    ("光伏", "bing", "光伏們"),      # 光伏們公众号文章（经转载被 Google News 收录，已验证 48h 内有更新）
+    ("光伏", "bing", "索比光伏网"),  # 索比光伏网文章（经转载被 Google News 收录，已验证有近 48h 更新）
+    ("储能", "bing", "储能"),
+    ("新能源", "bing", "新能源 -汽车"),
+    ("AI", "bing", "AI 大模型"),
     ("AI", "rss", "https://www.qbitai.com/feed"),
-    ("招投标", "gnews", "光伏 招标"),
-    ("招投标", "gnews", "光伏 中标"),
-    ("招投标", "gnews", "储能 招标"),
+    ("招投标", "bing", "光伏 招标"),
+    ("招投标", "bing", "光伏 中标"),
+    ("招投标", "bing", "储能 招标"),
 ]
 
 MAX_PER_CATEGORY = 10
@@ -106,9 +108,27 @@ CHART_SERIES = [
 ]
 
 
-def gnews_url(keyword):
-    return ("https://news.google.com/rss/search?q=" + quote(keyword) +
-            "&hl=zh-CN&gl=CN&ceid=CN%3Azh-Hans")
+def bing_url(keyword):
+    """Bing 新闻 RSS：自带发布者原文直链，国内网络可直接打开。"""
+    return "https://www.bing.com/news/search?q=" + quote(keyword) + "&format=rss"
+
+
+def bing_direct_url(link):
+    """从 Bing apiclick 跳转链接中提取发布者原文直链（url 参数）。
+
+    例：http://www.bing.com/news/apiclick.aspx?...&url=https%3a%2f%2fwww.sohu.com%2fa%2f...
+       -> https://www.sohu.com/a/...
+    提取失败时返回原链接，保证不丢数据。
+    """
+    if not link:
+        return ""
+    try:
+        from urllib.parse import urlparse, parse_qs, unquote
+        q = parse_qs(urlparse(link).query)
+        u = q.get("url", [""])[0]
+        return unquote(u) if u else link
+    except Exception:
+        return link
 
 
 def strip_html(text):
@@ -154,7 +174,7 @@ def parse_mid(price_str):
 
 
 def fetch_feed(category, kind, content):
-    url = gnews_url(content) if kind == "gnews" else content
+    url = bing_url(content) if kind == "bing" else content
     try:
         fp = feedparser.parse(url)
     except Exception as e:
@@ -170,6 +190,7 @@ def fetch_feed(category, kind, content):
         if not raw_title:
             continue
         title, source = split_source(raw_title)
+        source = e.get("news_source", "") or source  # Bing RSS 自带来源名
         summary = strip_html(e.get("description", ""))[:120]
         if source and summary == source:
             summary = ""
@@ -178,7 +199,7 @@ def fetch_feed(category, kind, content):
             "title": title,
             "summary": summary,
             "source": source or ("量子位" if "qbitai" in url else ""),
-            "url": e.get("link", ""),
+            "url": bing_direct_url(e.get("link", "")),
             "date": dt.strftime("%Y-%m-%d"),
             "_ts": dt.timestamp(),
         })
