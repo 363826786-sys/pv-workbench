@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>光伏新能源工作台</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg: #e9e4d2; --card: #f4efe0; --card2: #ece5cf;
+    --text: #16181f; --muted: #5d606e; --line: #c9c2a8;
+    --px: #0b6e7e; --pxline: #16181f;
+    --amber: #b45309; --cyan: #0e7490; --green: #15803d; --red: #b91c1c;
+    --scan: rgba(20,20,30,.055);
+    --notch: polygon(9px 0, calc(100% - 9px) 0, calc(100% - 9px) 9px, 100% 9px,
+      100% calc(100% - 9px), calc(100% - 9px) calc(100% - 9px), calc(100% - 9px) 100%,
+      9px 100%, 9px calc(100% - 9px), 0 calc(100% - 9px), 0 9px, 9px 9px);
+    --mono: "Courier New", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  }
+  body.dark {
+    --bg: #060a14; --card: #0c1222; --card2: #111a2e;
+    --text: #d9f3ff; --muted: #647f9c; --line: #1b2f4a;
+    --px: #00e5ff; --pxline: #00e5ff;
+    --amber: #ffb000; --cyan: #00e5ff; --green: #00ff9d; --red: #ff3860;
+    --scan: rgba(0,0,0,.17);
+  }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: -apple-system, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans SC", sans-serif;
+    background: var(--bg); color: var(--text); line-height: 1.6;
+  }
+  /* CRT 扫描线 */
+  body::after {
+    content: ""; position: fixed; inset: 0; z-index: 200; pointer-events: none;
+    background: repeating-linear-gradient(0deg, var(--scan) 0 1px, transparent 1px 3px);
+  }
+  ::selection { background: var(--amber); color: #0a0a0a; }
+  ::-webkit-scrollbar { width: 10px; height: 10px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--pxline); border: 2px solid var(--bg); }
+  :focus-visible { outline: 2px dashed var(--amber); outline-offset: 2px; }
+  .wrap { max-width: 980px; margin: 0 auto; padding: 16px 14px 40px; }
+
+  @keyframes blink { 0%,55% { opacity: 1; } 56%,100% { opacity: 0; } }
+  .blink { animation: blink 1.1s steps(1) infinite; }
+  @media (prefers-reduced-motion: reduce) {
+    .blink { animation: none; }
+    html { scroll-behavior: auto; }
+  }
+
+  /* ---------- 顶栏：终端机 ---------- */
+  header.hero {
+    position: relative; background: #0a1424; color: #eaf7ff;
+    border: 2px solid var(--px); clip-path: var(--notch);
+    padding: 20px 20px 18px; margin-bottom: 16px;
+    background-image:
+      radial-gradient(circle at 85% 20%, rgba(0,229,255,.10), transparent 42%),
+      linear-gradient(135deg, #0a1a30, #083b4d);
+  }
+  header.hero .sysbar { font-family: var(--mono); font-size: 12px; letter-spacing: 2px;
+    color: #00ff9d; margin-bottom: 10px; }
+  header.hero h1 { font-size: 21px; letter-spacing: 4px; margin-bottom: 8px; font-weight: 700; }
+  .px-sun { display: inline-block; width: 8px; height: 8px; background: var(--amber);
+    margin-right: 16px; vertical-align: 2px;
+    box-shadow: 0 -12px 0 var(--amber), 0 12px 0 var(--amber),
+      -12px 0 0 var(--amber), 12px 0 0 var(--amber),
+      -9px -9px 0 var(--amber), 9px -9px 0 var(--amber),
+      -9px 9px 0 var(--amber), 9px 9px 0 var(--amber); }
+  header.hero .meta { font-family: var(--mono); font-size: 12px; letter-spacing: 1px; color: #8fb4cc; }
+  header.hero .digest { margin-top: 10px; font-size: 13px; color: #d9f3ff;
+    background: rgba(0,229,255,.07); border: 1px solid rgba(0,229,255,.35); padding: 8px 12px; }
+  .theme-btn { position: absolute; top: 16px; right: 16px; background: transparent;
+    border: 2px solid var(--amber); color: var(--amber); padding: 4px 10px;
+    font-size: 12px; letter-spacing: 2px; cursor: pointer; font-family: var(--mono); }
+  .theme-btn:hover { background: var(--amber); color: #0a0a0a; }
+
+  /* ---------- 导航 ---------- */
+  .topnav { position: sticky; top: 8px; z-index: 50; background: var(--card);
+    border: 2px solid var(--pxline); clip-path: var(--notch);
+    padding: 10px 12px; margin-bottom: 16px; display: flex; gap: 8px; flex-wrap: wrap; }
+  .topnav a { font-size: 12px; letter-spacing: 2px; color: var(--muted); text-decoration: none;
+    padding: 5px 10px; border: 2px solid var(--line); white-space: nowrap; font-family: var(--mono); }
+  .topnav a:hover { color: #0a0a0a; background: var(--amber); border-color: var(--amber); }
+
+  /* ---------- 板块 ---------- */
+  section { background: var(--card); border: 2px solid var(--pxline); clip-path: var(--notch);
+    padding: 18px; margin-bottom: 16px; scroll-margin-top: 84px; }
+  section h2 { font-size: 16px; letter-spacing: 3px; margin-bottom: 14px; font-weight: 700; }
+  section h2::before { content: "> "; color: var(--amber); font-family: var(--mono); }
+  .grid2 { display: grid; grid-template-columns: 1fr; gap: 12px; }
+  @media (min-width: 720px) { .grid2 { grid-template-columns: 1fr 1fr; } }
+  .card { background: var(--card2); border: 2px solid var(--line); clip-path: var(--notch); padding: 14px; }
+  .card h3 { font-size: 14px; letter-spacing: 2px; margin-bottom: 8px; color: var(--amber); }
+  .kv { display: flex; justify-content: space-between; gap: 10px; padding: 6px 0;
+    border-bottom: 1px dashed var(--line); font-size: 14px; }
+  .kv:last-child { border-bottom: none; }
+  .kv .k { color: var(--muted); flex-shrink: 0; }
+  .kv .v { text-align: right; font-family: var(--mono); font-weight: 700; }
+  .note { font-size: 12px; color: var(--muted); margin-top: 8px; }
+  .warn { font-size: 12px; color: var(--amber); margin-top: 8px; }
+  .extlink { font-size: 12px; margin-top: 6px; }
+  .extlink a { color: var(--cyan); font-family: var(--mono); }
+  footer { text-align: center; color: var(--muted); font-size: 12px; padding: 12px;
+    font-family: var(--mono); letter-spacing: 1px; }
+  .loading, .error { text-align: center; padding: 60px 20px; color: var(--muted);
+    font-family: var(--mono); letter-spacing: 2px; }
+  .error { color: var(--red); }
+  .empty { color: var(--muted); font-size: 13px; padding: 6px 0; }
+
+  /* ---------- 测算器 ---------- */
+  .btn { display: inline-block; padding: 10px 22px; border: 2px solid var(--amber);
+    background: var(--amber); color: #0a0a0a; font-size: 14px; font-weight: 700;
+    letter-spacing: 2px; cursor: pointer; clip-path: var(--notch); font-family: inherit; }
+  .btn:hover { filter: brightness(1.12); }
+  .collapsed { display: none; }
+  #calcBody { margin-top: 12px; }
+  .calc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  @media (max-width: 560px) { .calc-grid { grid-template-columns: 1fr; } }
+  .field label { display: block; font-size: 12px; letter-spacing: 1px; color: var(--muted); margin-bottom: 4px; }
+  .field input { width: 100%; padding: 8px 10px; border: 2px solid var(--line);
+    background: var(--bg); color: var(--text); font-size: 14px; font-family: var(--mono); border-radius: 0; }
+  .field input:focus { border-color: var(--amber); outline: none; }
+  .calc-result { margin-top: 14px; border-top: 1px dashed var(--line); padding-top: 12px; }
+  .calc-result .big { font-size: 20px; font-weight: 700; color: var(--amber); font-family: var(--mono); }
+
+  /* ---------- 资讯 ---------- */
+  .toolbar { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 12px; align-items: center; }
+  .search { flex: 1; min-width: 160px; padding: 7px 12px; border: 2px solid var(--line);
+    background: var(--bg); color: var(--text); font-size: 14px; border-radius: 0; font-family: var(--mono); }
+  .search:focus { border-color: var(--amber); outline: none; }
+  .tabs { display: flex; gap: 6px; flex-wrap: wrap; }
+  .tab { padding: 5px 12px; border: 2px solid var(--line); background: var(--card);
+    color: var(--muted); font-size: 12px; letter-spacing: 1px; cursor: pointer;
+    border-radius: 0; font-family: var(--mono); }
+  .tab:hover { border-color: var(--amber); color: var(--amber); }
+  .tab.on { background: var(--amber); border-color: var(--amber); color: #0a0a0a; font-weight: 700; }
+  .news-cat { margin-bottom: 14px; }
+  .news-cat h3 { font-size: 14px; letter-spacing: 2px; margin-bottom: 8px; }
+  .news-cat h3 .tag { display: inline-block; font-size: 12px; color: #0a0a0a;
+    padding: 2px 8px; margin-right: 6px; font-weight: 700;
+    box-shadow: 3px 3px 0 rgba(0,0,0,.35); font-family: var(--mono); }
+  .tag-pv { background: #ffb000; } .tag-st { background: #00e5ff; }
+  .tag-ne { background: #00ff9d; } .tag-ai { background: #c26bff; } .tag-bid { background: #ff3860; }
+  .news-item { padding: 8px 0; border-bottom: 1px solid var(--line); font-size: 14px; }
+  .news-item:last-child { border-bottom: none; }
+  .news-item a { color: var(--text); text-decoration: none; font-weight: 500; }
+  .news-item a:hover { color: var(--amber); text-decoration: underline; }
+  .news-item .sum { color: var(--muted); font-size: 13px; margin-top: 2px; }
+  .news-item .src { font-size: 12px; color: var(--muted); margin-top: 2px; font-family: var(--mono); }
+
+  /* ---------- 价格 / 辐照 / 政策 ---------- */
+  table.price { width: 100%; border-collapse: collapse; font-size: 14px; }
+  table.price th, table.price td { padding: 8px 6px; border-bottom: 1px solid var(--line); text-align: left; }
+  table.price th { color: var(--amber); font-weight: 700; font-size: 12px; letter-spacing: 2px; font-family: var(--mono); }
+  table.price td.p { font-weight: 700; color: var(--amber); white-space: nowrap; font-family: var(--mono); font-size: 16px; }
+  table.irr { width: 100%; border-collapse: collapse; font-size: 13px; }
+  table.irr th, table.irr td { padding: 7px 6px; border-bottom: 1px solid var(--line); text-align: center; font-family: var(--mono); }
+  table.irr th { color: var(--amber); font-weight: 700; letter-spacing: 1px; }
+  table.irr td.day { color: var(--muted); white-space: nowrap; }
+  .pol-item { padding: 8px 0; border-bottom: 1px solid var(--line); font-size: 14px; }
+  .pol-item:last-child { border-bottom: none; }
+  .pol-item a { color: var(--text); text-decoration: none; font-weight: 500; }
+  .pol-item a:hover { color: var(--amber); text-decoration: underline; }
+  .pol-item .sum { color: var(--muted); font-size: 13px; margin-top: 2px; }
+  .pol-item .dt { font-size: 12px; color: var(--muted); font-family: var(--mono); }
+
+  /* ---------- 走势图 ---------- */
+  .chart-legend { display: flex; gap: 12px; flex-wrap: wrap; font-size: 12px; margin: 8px 0;
+    color: var(--muted); font-family: var(--mono); letter-spacing: 1px; }
+  .dot { display: inline-block; width: 10px; height: 10px; margin-right: 4px; }
+  svg.chart { width: 100%; height: auto; display: block; }
+</style>
+</head>
+<body>
+<div class="wrap" id="app">
+  <div class="loading">> LOADING<span class="blink">▊</span></div>
+</div>
+
+<script>
+function esc(s) {
+  return String(s == null ? "" : s)
+    .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;");
+}
+function fmtTime(iso) {
+  try {
+    const d = new Date(iso);
+    const p = n => String(n).padStart(2, "0");
+    return d.getFullYear() + "-" + p(d.getMonth()+1) + "-" + p(d.getDate()) +
+           " " + p(d.getHours()) + ":" + p(d.getMinutes());
+  } catch (e) { return iso || ""; }
+}
+const CAT_TAG = { "光伏": "tag-pv", "储能": "tag-st", "新能源": "tag-ne", "AI": "tag-ai", "招投标": "tag-bid" };
+const CAT_ORDER = ["光伏", "储能", "新能源", "AI", "招投标"];
+const CHART_COLORS = ["#00e5ff", "#ffb000", "#00ff9d", "#c26bff", "#ff3860"];
+let NEWS = [];
+let activeCat = "全部";
+let query = "";
+
+/* ---------- 主题：默认像素暗夜 ---------- */
+function initTheme() {
+  let dark;
+  try {
+    const saved = localStorage.getItem("wb-theme");
+    dark = saved ? saved === "dark" : true;
+  } catch (e) { dark = true; }
+  document.body.classList.toggle("dark", dark);
+  const b = document.getElementById("themeBtn");
+  if (b) b.textContent = dark ? "[ 日间 ]" : "[ 夜间 ]";
+}
+function toggleTheme() {
+  const dark = !document.body.classList.contains("dark");
+  document.body.classList.toggle("dark", dark);
+  try { localStorage.setItem("wb-theme", dark ? "dark" : "light"); } catch (e) {}
+  const b = document.getElementById("themeBtn");
+  if (b) b.textContent = dark ? "[ 日间 ]" : "[ 夜间 ]";
+}
+
+function toggleCalc() {
+  const body = document.getElementById("calcBody");
+  const btn = document.getElementById("calcToggle");
+  const collapsed = body.classList.toggle("collapsed");
+  btn.textContent = collapsed ? "[+] 打开测算器" : "[-] 收起测算器";
+  if (!collapsed) calc();
+}
+function gotoCalc(e) {
+  if (e) e.preventDefault();
+  const body = document.getElementById("calcBody");
+  const btn = document.getElementById("calcToggle");
+  if (body.classList.contains("collapsed")) {
+    body.classList.remove("collapsed");
+    btn.textContent = "[-] 收起测算器";
+    calc();
+  }
+  document.getElementById("sec-calc").scrollIntoView({ behavior: "smooth" });
+}
+
+/* ---------- 资讯：搜索 + 分类 ---------- */
+function newsItemHtml(n) {
+  const link = n.url
+    ? '<a href="' + esc(n.url) + '" target="_blank" rel="noopener">' + esc(n.title) + "</a>"
+    : esc(n.title);
+  return '<div class="news-item" data-cat="' + esc(n.category) + '">' + link +
+    (n.summary ? '<div class="sum">' + esc(n.summary) + "</div>" : "") +
+    '<div class="src">' + esc(n.date || "") + (n.source ? " // " + esc(n.source) : "") + "</div></div>";
+}
+function renderNews() {
+  const box = document.getElementById("newsList");
+  if (!box) return;
+  let items = NEWS.filter(n => activeCat === "全部" || n.category === activeCat);
+  if (query) {
+    const q = query.toLowerCase();
+    items = items.filter(n => (n.title + " " + (n.summary || "")).toLowerCase().indexOf(q) >= 0);
+  }
+  if (!items.length) { box.innerHTML = '<div class="empty">> NO MATCH.</div>'; return; }
+  let html = "";
+  CAT_ORDER.forEach(cat => {
+    const list = items.filter(n => n.category === cat);
+    if (!list.length) return;
+    html += '<div class="news-cat"><h3><span class="tag ' + (CAT_TAG[cat] || "tag-ne") + '">' +
+      esc(cat) + "</span>最新动态</h3>";
+    list.forEach(n => { html += newsItemHtml(n); });
+    html += "</div>";
+  });
+  box.innerHTML = html;
+}
+function setCat(cat, el) {
+  activeCat = cat;
+  const tabs = document.querySelectorAll(".tab");
+  tabs.forEach(t => t.classList.toggle("on", t === el));
+  renderNews();
+}
+function onSearch(v) { query = (v || "").trim(); renderNews(); }
+
+/* ---------- 收益测算器 ---------- */
+function num(id, def) {
+  const v = parseFloat((document.getElementById(id) || {}).value);
+  return isNaN(v) ? def : v;
+}
+function calc() {
+  const cap = num("c_cap", 100);        // kW
+  const hours = num("c_hours", 1100);   // 年利用小时数
+  const selfR = num("c_self", 80) / 100;
+  const cost = num("c_cost", 3.2);      // 元/W
+  const pPeak = num("c_peak", 1.12), pFlat = num("c_flat", 0.67), pVal = num("c_val", 0.27);
+  const fi = num("c_fi", 0.453);
+  const gen = cap * hours;
+  const selfKwh = gen * selfR;
+  const expKwh = gen - selfKwh;
+  const wAvg = pPeak * 0.3 + pFlat * 0.5 + pVal * 0.2;
+  const saveMoney = selfKwh * wAvg;
+  const fiMoney = expKwh * fi;
+  const total = saveMoney + fiMoney;
+  const invest = cap * 1000 * cost;
+  const years = total > 0 ? invest / total : 0;
+  const f = n => (Math.round(n * 10) / 10).toLocaleString("zh-CN");
+  const box = document.getElementById("calcResult");
+  if (!box) return;
+  box.innerHTML =
+    '<div class="kv"><span class="k">年发电量</span><span class="v">' + f(gen) + " kWh</span></div>" +
+    '<div class="kv"><span class="k">自发自用（' + Math.round(selfR * 100) + '%）节省电费</span><span class="v">' + f(saveMoney) + " 元</span></div>" +
+    '<div class="kv"><span class="k">余电上网收入</span><span class="v">' + f(fiMoney) + " 元</span></div>" +
+    '<div class="kv"><span class="k">年总收益</span><span class="v big">' + f(total) + " 元</span></div>" +
+    '<div class="kv"><span class="k">总投资</span><span class="v">' + f(invest) + " 元</span></div>" +
+    '<div class="kv"><span class="k">静态回本年限</span><span class="v big">' + (total > 0 ? years.toFixed(1) : "—") + " 年</span></div>" +
+    '<div class="note">自用电加权平均电价 ' + wAvg.toFixed(3) + " 元/kWh（按峰30%/平50%/谷20%估算）</div>";
+}
+
+/* ---------- 辐照预报（Open-Meteo） ---------- */
+const IRR_CITIES = [["广州", 23.13, 113.26], ["深圳", 22.54, 114.06], ["佛山", 23.02, 113.12]];
+async function loadIrr() {
+  const box = document.getElementById("irrBody");
+  if (!box) return;
+  try {
+    const url = "https://api.open-meteo.com/v1/forecast?latitude=23.13,22.54,23.02" +
+      "&longitude=113.26,114.06,113.12&daily=shortwave_radiation_sum" +
+      "&timezone=Asia%2FShanghai&forecast_days=7";
+    const res = await fetch(url);
+    if (!res.ok) throw new Error("HTTP " + res.status);
+    const arr = await res.json();
+    if (!Array.isArray(arr) || !arr.length || !arr[0].daily) throw new Error("数据格式异常");
+    const days = arr[0].daily.time;
+    let html = '<table class="irr"><tr><th>日期</th>';
+    IRR_CITIES.forEach(c => { html += "<th>" + esc(c[0]) + "</th>"; });
+    html += "</tr>";
+    days.forEach((d, i) => {
+      html += '<tr><td class="day">' + esc(d.slice(5)) + "</td>";
+      arr.forEach((city, ci) => {
+        const mj = city.daily.shortwave_radiation_sum[i];
+        const kwh = (mj == null ? null : mj / 3.6);
+        html += "<td>" + (kwh == null ? "—" : kwh.toFixed(1)) + "</td>";
+      });
+      html += "</tr>";
+    });
+    html += "</table>" +
+      '<div class="note">未来7天水平面太阳总辐照（kWh/㎡/天），数据来源 Open-Meteo，辐照越高发电预期越好。</div>';
+    box.innerHTML = html;
+  } catch (e) {
+    box.innerHTML = '<div class="empty">> 辐照数据加载失败（' + esc(e.message) + "），请稍后刷新重试。</div>";
+  }
+}
+
+/* ---------- 价格走势图（原生 SVG，指数化） ---------- */
+async function drawChart() {
+  const wrap = document.getElementById("trendChart");
+  if (!wrap) return;
+  let hist = null;
+  try {
+    const res = await fetch("history.json", { cache: "no-store" });
+    if (!res.ok) throw new Error("HTTP " + res.status);
+    hist = await res.json();
+  } catch (e) {
+    wrap.innerHTML = '<div class="empty">> 走势数据加载失败，等待下次更新。</div>';
+    return;
+  }
+  if (!hist || hist.length < 2) {
+    wrap.innerHTML = '<div class="empty">> 历史数据积累中（当前' + (hist ? hist.length : 0) +
+      '期），每日更新后将形成价格走势。</div>';
+    return;
+  }
+  const keys = [];
+  hist.forEach(s => (s.items || []).forEach(it => { if (keys.indexOf(it.key) < 0) keys.push(it.key); }));
+  const series = keys.map((k, ki) => {
+    const vals = hist.map(s => {
+      const it = (s.items || []).find(x => x.key === k);
+      return it ? it.mid : null;
+    });
+    const first = vals.find(v => v != null);
+    const unit = ((hist.map(s => (s.items || []).find(x => x.key === k)).find(x => x) || {}).unit) || "";
+    return { key: k, color: CHART_COLORS[ki % CHART_COLORS.length], unit: unit,
+             idx: vals.map(v => v == null || !first ? null : v / first * 100) };
+  }).filter(s => s.idx.some(v => v != null));
+  if (!series.length) { wrap.innerHTML = '<div class="empty">> 暂无可绘制的价格序列。</div>'; return; }
+
+  const W = 620, H = 260, PL = 44, PR = 12, PT = 14, PB = 30;
+  let lo = Infinity, hi = -Infinity;
+  series.forEach(s => s.idx.forEach(v => { if (v != null) { lo = Math.min(lo, v); hi = Math.max(hi, v); } }));
+  if (hi - lo < 1) { hi += 0.5; lo -= 0.5; }
+  const pad = (hi - lo) * 0.15; lo -= pad; hi += pad;
+  const n = hist.length;
+  const X = i => PL + (W - PL - PR) * (n === 1 ? 0.5 : i / (n - 1));
+  const Y = v => PT + (H - PT - PB) * (1 - (v - lo) / (hi - lo));
+  let svg = '<svg class="chart" viewBox="0 0 ' + W + " " + H + '">';
+  [0.25, 0.5, 0.75].forEach(f => {
+    const y = PT + (H - PT - PB) * f;
+    svg += '<line x1="' + PL + '" y1="' + y.toFixed(1) + '" x2="' + (W - PR) + '" y2="' + y.toFixed(1) +
+      '" stroke="var(--line)" stroke-width="1" stroke-dasharray="4 3"/>';
+  });
+  svg += '<text x="4" y="' + (Y(hi) + 4).toFixed(1) + '" font-size="11" fill="var(--muted)" font-family="monospace">' + hi.toFixed(0) + "</text>";
+  svg += '<text x="4" y="' + (Y(lo) + 4).toFixed(1) + '" font-size="11" fill="var(--muted)" font-family="monospace">' + lo.toFixed(0) + "</text>";
+  const xi = [0, Math.floor(n / 2), n - 1];
+  xi.forEach(i => {
+    svg += '<text x="' + X(i).toFixed(1) + '" y="' + (H - 8) + '" font-size="11" fill="var(--muted)" font-family="monospace" text-anchor="middle">' +
+      esc(hist[i].date.slice(5)) + "</text>";
+  });
+  series.forEach(s => {
+    let pts = "";
+    s.idx.forEach((v, i) => { if (v != null) pts += X(i).toFixed(1) + "," + Y(v).toFixed(1) + " "; });
+    svg += '<polyline points="' + pts + '" fill="none" stroke="' + s.color + '" stroke-width="2"/>';
+    s.idx.forEach((v, i) => {
+      if (v == null) return;
+      svg += '<rect x="' + (X(i) - 3).toFixed(1) + '" y="' + (Y(v) - 3).toFixed(1) + '" width="6" height="6" fill="' + s.color + '">' +
+        "<title>" + esc(s.key + " " + hist[i].date + " 指数" + v.toFixed(1)) + "</title></rect>";
+    });
+  });
+  svg += "</svg>";
+  let legend = '<div class="chart-legend">';
+  series.forEach(s => {
+    const lastV = s.idx.filter(v => v != null).pop();
+    legend += '<span><span class="dot" style="background:' + s.color + '"></span>' + esc(s.key) +
+      "（指数" + (lastV != null ? lastV.toFixed(1) : "—") + "，" + esc(s.unit) + "）</span>";
+  });
+  legend += "</div>";
+  wrap.innerHTML = legend + svg +
+    '<div class="note">价格指数（首次记录=100），便于对比不同环节涨跌；原始报价见下方表格。</div>';
+}
+
+/* ---------- 主渲染 ---------- */
+function render(d) {
+  const el = document.getElementById("app");
+  const e = d.electricity || {};
+  const tou = e.tou || {};
+  const fi = e.feedin || {};
+  const ag = e.agency || {};
+  const sp = e.spot || {};
+  const gr = e.green_trade || {};
+  NEWS = d.news || [];
+  const sc = d.supply_chain || [];
+  const pols = d.policies || [];
+
+  let scHtml = "";
+  if (sc.length) {
+    scHtml = '<table class="price"><tr><th>环节</th><th>规格</th><th>价格</th><th>单位</th><th>报价日期</th></tr>';
+    sc.forEach(r => {
+      scHtml += "<tr><td>" + esc(r.item) + "</td><td>" + esc(r.spec) + '</td><td class="p">' +
+        esc(r.price) + "</td><td>" + esc(r.unit) + "</td><td>" + esc(r.date) +
+        (r.source ? "<br><small style='color:var(--muted)'>" + esc(r.source) + "</small>" : "") + "</td></tr>";
+    });
+    scHtml += "</table>";
+  } else {
+    scHtml = '<div class="empty">> 暂无价格数据。</div>';
+  }
+
+  let polHtml = "";
+  pols.forEach(p => {
+    const link = p.url
+      ? '<a href="' + esc(p.url) + '" target="_blank" rel="noopener">' + esc(p.title) + "</a>"
+      : esc(p.title);
+    polHtml += '<div class="pol-item">' + link +
+      (p.summary ? '<div class="sum">' + esc(p.summary) + "</div>" : "") +
+      '<div class="dt">' + esc(p.date || "") + "</div></div>";
+  });
+  if (!polHtml) polHtml = '<div class="empty">> 暂无政策记录。</div>';
+
+  const cats = ["全部"].concat(CAT_ORDER);
+  let tabsHtml = '<div class="tabs">';
+  cats.forEach((c, i) => {
+    tabsHtml += '<button class="tab' + (i === 0 ? " on" : "") + '" onclick="setCat(\'' + esc(c) +
+      '\', this)">' + esc(c) + "</button>";
+  });
+  tabsHtml += "</div>";
+
+  el.innerHTML =
+    '<header class="hero"><button class="theme-btn" id="themeBtn" onclick="toggleTheme()">[ 日间 ]</button>' +
+    '<div class="sysbar">&gt; SYS.STATUS :: ONLINE <span class="blink">▊</span></div>' +
+    '<h1><span class="px-sun"></span>光伏新能源工作台</h1>' +
+    '<div class="meta">[LOG] 数据更新于 ' + esc(fmtTime(d.updated_at)) + "（北京时间）</div>" +
+    (d.digest ? '<div class="digest">&gt; ' + esc(d.digest) + "</div>" : "") + "</header>" +
+
+    '<nav class="topnav">' +
+      '<a href="#sec-price">广东电价</a>' +
+      '<a href="#sec-calc" onclick="gotoCalc(event)">收益测算</a>' +
+      '<a href="#sec-irr">辐照预报</a>' +
+      '<a href="#sec-news">每日资讯</a>' +
+      '<a href="#sec-chain">产业链价格</a>' +
+      '<a href="#sec-policy">政策跟踪</a>' +
+    "</nav>" +
+
+    '<section id="sec-price"><h2>广东电价</h2><div class="grid2">' +
+      '<div class="card"><h3>峰谷分时电价</h3>' +
+        '<div class="kv"><span class="k">峰平谷比价</span><span class="v">' + esc(tou.ratio) + "</span></div>" +
+        '<div class="kv"><span class="k">高峰时段</span><span class="v">' + esc(tou.peak) + "</span></div>" +
+        '<div class="kv"><span class="k">低谷时段</span><span class="v">' + esc(tou.valley) + "</span></div>" +
+        '<div class="kv"><span class="k">平段</span><span class="v">' + esc(tou.flat_note) + "</span></div>" +
+        (tou.spread ? '<div class="note">📊 ' + esc(tou.spread) + "</div>" : "") +
+        (tou.example ? '<div class="note">' + esc(tou.example) + "</div>" : "") +
+        (tou.note ? '<div class="note">⚠️ ' + esc(tou.note) + "</div>" : "") +
+      "</div>" +
+      '<div class="card"><h3>余电上网与机制电价</h3>' +
+        '<div class="kv"><span class="k">存量项目</span><span class="v">' + esc(fi.existing) + "</span></div>" +
+        '<div class="kv"><span class="k">增量竞价上限</span><span class="v">' + esc(fi.new_cap) + "</span></div>" +
+        '<div class="kv"><span class="k">现货参考</span><span class="v">' + esc(fi.spot_ref) + "</span></div>" +
+        '<div class="kv"><span class="k">中长期参考</span><span class="v">' + esc(fi.midlong_ref) + "</span></div>" +
+        (fi.green_ref ? '<div class="kv"><span class="k">绿电环境价值</span><span class="v">' + esc(fi.green_ref) + "</span></div>" : "") +
+      "</div>" +
+      '<div class="card"><h3>' + esc(ag.title || "代理购电价（月度）") + "</h3>" +
+        (ag.note ? '<div class="note">' + esc(ag.note) + "</div>" : "") +
+        (ag.update_note ? '<div class="warn">🗓 ' + esc(ag.update_note) + "</div>" : "") +
+        (ag.url ? '<div class="extlink"><a href="' + esc(ag.url) + '" target="_blank" rel="noopener">查看电价表示例（PDF）</a></div>' : "") +
+      "</div>" +
+      '<div class="card"><h3>' + esc(sp.title || "电力现货参考") + "</h3>" +
+        (sp.day_ahead ? '<div class="kv"><span class="k">日前均价</span><span class="v">' + esc(sp.day_ahead) + "</span></div>" : "") +
+        (sp.realtime ? '<div class="kv"><span class="k">实时均价</span><span class="v">' + esc(sp.realtime) + "</span></div>" : "") +
+        (sp.settle ? '<div class="kv"><span class="k">新能源结算均价</span><span class="v">' + esc(sp.settle) + "</span></div>" : "") +
+        (sp.date_note ? '<div class="note">' + esc(sp.date_note) + "</div>" : "") +
+        (sp.url ? '<div class="extlink"><a href="' + esc(sp.url) + '" target="_blank" rel="noopener">来源：广东电力市场半年报</a></div>' : "") +
+      "</div>" +
+      '<div class="card"><h3>' + esc(gr.title || "绿电交易参考") + "</h3>" +
+        (gr.energy ? '<div class="kv"><span class="k">电能量均价</span><span class="v">' + esc(gr.energy) + "</span></div>" : "") +
+        (gr.env_value ? '<div class="kv"><span class="k">环境价值均价</span><span class="v">' + esc(gr.env_value) + "</span></div>" : "") +
+        (gr.date_note ? '<div class="note">' + esc(gr.date_note) + "</div>" : "") +
+        (gr.url ? '<div class="extlink"><a href="' + esc(gr.url) + '" target="_blank" rel="noopener">来源：广东电力市场半年报</a></div>' : "") +
+      "</div>" +
+    "</div></section>" +
+
+    '<section id="sec-calc"><h2>分布式收益测算器</h2>' +
+      '<button class="btn" id="calcToggle" onclick="toggleCalc()">[+] 打开测算器</button>' +
+      '<div id="calcBody" class="collapsed">' +
+      '<div class="calc-grid">' +
+        '<div class="field"><label>装机容量（kW）</label><input id="c_cap" type="number" value="100" oninput="calc()"></div>' +
+        '<div class="field"><label>年利用小时数（h）</label><input id="c_hours" type="number" value="1100" oninput="calc()"></div>' +
+        '<div class="field"><label>自发自用比例（%）</label><input id="c_self" type="number" value="80" oninput="calc()"></div>' +
+        '<div class="field"><label>单位造价（元/W）</label><input id="c_cost" type="number" step="0.1" value="3.2" oninput="calc()"></div>' +
+        '<div class="field"><label>峰电价（元/kWh）</label><input id="c_peak" type="number" step="0.01" value="1.12" oninput="calc()"></div>' +
+        '<div class="field"><label>平电价（元/kWh）</label><input id="c_flat" type="number" step="0.01" value="0.67" oninput="calc()"></div>' +
+        '<div class="field"><label>谷电价（元/kWh）</label><input id="c_val" type="number" step="0.01" value="0.27" oninput="calc()"></div>' +
+        '<div class="field"><label>余电上网价（元/kWh）</label><input id="c_fi" type="number" step="0.001" value="0.453" oninput="calc()"></div>' +
+      "</div>" +
+      '<div class="calc-result" id="calcResult"></div>' +
+      '<div class="warn">⚠️ 简化估算，仅供参考：未计运维成本、组件衰减与资金成本；自用电按峰30%/平50%/谷20%加权估算。</div>' +
+      "</div>" +
+    "</section>" +
+
+    '<section id="sec-irr"><h2>辐照预报（广东·未来7天）</h2><div id="irrBody"><div class="empty">> 辐照数据加载中…</div></div></section>' +
+
+    '<section id="sec-news"><h2>每日资讯</h2>' +
+      '<div class="toolbar"><input class="search" id="newsSearch" placeholder="> 搜索标题或摘要…" oninput="onSearch(this.value)">' + tabsHtml + "</div>" +
+      '<div id="newsList"></div>' +
+    "</section>" +
+
+    "<section id=\"sec-chain\"><h2>产业链价格</h2>" +
+      '<div id="trendChart"><div class="empty">> 走势图加载中…</div></div>' +
+      scHtml +
+      '<div class="note">价格每周对照 InfoLink / 硅业分会报价手动更新；带"预测区间"字样的为机构年度预测，非实时报价。</div></section>' +
+
+    "<section id=\"sec-policy\"><h2>政策跟踪</h2>" + polHtml + "</section>" +
+
+    "<footer>&gt; END OF FEED _<br>数据来源：Bing 新闻、量子位、InfoLink、硅业分会、广东电力交易中心、Open-Meteo 等公开渠道<br>" +
+    "电价以官方正式文件为准 · 每天早上自动更新</footer>";
+
+  initTheme();
+  renderNews();
+  calc();
+  loadIrr();
+  drawChart();
+}
+
+async function load() {
+  try {
+    const res = await fetch("data.json", { cache: "no-store" });
+    if (!res.ok) throw new Error("HTTP " + res.status);
+    const d = await res.json();
+    render(d);
+  } catch (e) {
+    document.getElementById("app").innerHTML =
+      '<div class="error">> 数据加载失败<br><small>请检查网络连接后刷新重试（' +
+      esc(e.message) + "）</small></div>";
+  }
+}
+load();
+</script>
+</body>
+</html>
