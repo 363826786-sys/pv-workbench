@@ -1,0 +1,36 @@
+name: 每日更新工作台数据
+
+on:
+  schedule:
+    # 北京时间每天 08:50 运行（UTC 00:50）
+    - cron: "50 0 * * *"
+  workflow_dispatch:  # 允许在 Actions 页面手动触发
+
+permissions:
+  contents: write  # 需要写权限以提交更新后的 data.json
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 拉取仓库
+        uses: actions/checkout@v4
+
+      - name: 安装 Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: 安装依赖
+        run: pip install -r requirements.txt
+
+      - name: 运行更新脚本
+        run: python update.py
+
+      - name: 提交并推送数据文件（如有变化）
+        run: |
+          git config user.name "workbench-bot"
+          git config user.email "workbench-bot@users.noreply.github.com"
+          git add data.json history.json
+          git diff --staged --quiet || git commit -m "chore: 每日数据更新 $(date +%Y-%m-%d)"
+          git push
