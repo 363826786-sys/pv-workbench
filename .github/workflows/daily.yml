@@ -2,8 +2,8 @@ name: 每日更新工作台数据
 
 on:
   schedule:
-# 北京时间每天 02:50 触发（UTC 18:50），GitHub 调度约延迟 6 小时，实际刷新落在早上 08:50 左右
-- cron: "50 18 * * *"
+    # 北京时间每天 02:50 触发（UTC 18:50），GitHub 调度约延迟 6 小时，实际刷新落在早上 08:50 左右
+    - cron: "50 18 * * *"
   workflow_dispatch:  # 允许在 Actions 页面手动触发
 
 permissions:
