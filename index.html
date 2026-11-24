@@ -24,7 +24,6 @@
     --amber: #ffb000; --cyan: #00e5ff; --green: #00ff9d; --red: #ff3860;
     --scan: rgba(0,0,0,.17);
   }
-  html { scroll-behavior: smooth; }
   body {
     font-family: -apple-system, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans SC", sans-serif;
     background: var(--bg); color: var(--text); line-height: 1.6;
@@ -42,17 +41,18 @@
   .wrap { max-width: 980px; margin: 0 auto; padding: 16px 14px 40px; }
 
   @keyframes blink { 0%,55% { opacity: 1; } 56%,100% { opacity: 0; } }
+  @keyframes viewIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
   .blink { animation: blink 1.1s steps(1) infinite; }
   @media (prefers-reduced-motion: reduce) {
     .blink { animation: none; }
-    html { scroll-behavior: auto; }
+    .view-panel.active { animation: none !important; }
   }
 
   /* ---------- 顶栏：终端机 ---------- */
   header.hero {
     position: relative; background: #0a1424; color: #eaf7ff;
     border: 2px solid var(--px); clip-path: var(--notch);
-    padding: 20px 20px 18px; margin-bottom: 16px;
+    padding: 20px 20px 18px; margin-bottom: 14px;
     background-image:
       radial-gradient(circle at 85% 20%, rgba(0,229,255,.10), transparent 42%),
       linear-gradient(135deg, #0a1a30, #083b4d);
@@ -74,17 +74,24 @@
     font-size: 12px; letter-spacing: 2px; cursor: pointer; font-family: var(--mono); }
   .theme-btn:hover { background: var(--amber); color: #0a0a0a; }
 
-  /* ---------- 导航 ---------- */
+  /* ---------- 工作区视图切换导航 ---------- */
   .topnav { position: sticky; top: 8px; z-index: 50; background: var(--card);
     border: 2px solid var(--pxline); clip-path: var(--notch);
-    padding: 10px 12px; margin-bottom: 16px; display: flex; gap: 8px; flex-wrap: wrap; }
-  .topnav a { font-size: 12px; letter-spacing: 2px; color: var(--muted); text-decoration: none;
-    padding: 5px 10px; border: 2px solid var(--line); white-space: nowrap; font-family: var(--mono); }
-  .topnav a:hover { color: #0a0a0a; background: var(--amber); border-color: var(--amber); }
+    padding: 8px 10px; margin-bottom: 16px; display: flex; gap: 8px; flex-wrap: wrap; }
+  .nav-tab { font-size: 12px; letter-spacing: 1.5px; color: var(--muted); text-decoration: none;
+    padding: 6px 12px; border: 2px solid var(--line); background: var(--bg);
+    white-space: nowrap; font-family: var(--mono); cursor: pointer; transition: none; }
+  .nav-tab:hover { color: var(--amber); border-color: var(--amber); }
+  .nav-tab.on { color: #0a0a0a; background: var(--amber); border-color: var(--amber); font-weight: 700; }
+  .nav-tab.on::before { content: "> "; }
+
+  /* ---------- 视图容器 ---------- */
+  .view-panel { display: none; }
+  .view-panel.active { display: block; animation: viewIn .16s ease-out; }
 
   /* ---------- 板块 ---------- */
   section { background: var(--card); border: 2px solid var(--pxline); clip-path: var(--notch);
-    padding: 18px; margin-bottom: 16px; scroll-margin-top: 84px; }
+    padding: 18px; margin-bottom: 16px; }
   section h2 { font-size: 16px; letter-spacing: 3px; margin-bottom: 14px; font-weight: 700; }
   section h2::before { content: "> "; color: var(--amber); font-family: var(--mono); }
   .grid2 { display: grid; grid-template-columns: 1fr; gap: 12px; }
@@ -108,12 +115,6 @@
   .empty { color: var(--muted); font-size: 13px; padding: 6px 0; }
 
   /* ---------- 测算器 ---------- */
-  .btn { display: inline-block; padding: 10px 22px; border: 2px solid var(--amber);
-    background: var(--amber); color: #0a0a0a; font-size: 14px; font-weight: 700;
-    letter-spacing: 2px; cursor: pointer; clip-path: var(--notch); font-family: inherit; }
-  .btn:hover { filter: brightness(1.12); }
-  .collapsed { display: none; }
-  #calcBody { margin-top: 12px; }
   .calc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
   @media (max-width: 560px) { .calc-grid { grid-template-columns: 1fr; } }
   .field label { display: block; font-size: 12px; letter-spacing: 1px; color: var(--muted); margin-bottom: 4px; }
@@ -149,6 +150,7 @@
   .news-item .src { font-size: 12px; color: var(--muted); margin-top: 2px; font-family: var(--mono); }
 
   /* ---------- 价格 / 辐照 / 政策 ---------- */
+  .table-wrap { overflow-x: auto; }
   table.price { width: 100%; border-collapse: collapse; font-size: 14px; }
   table.price th, table.price td { padding: 8px 6px; border-bottom: 1px solid var(--line); text-align: left; }
   table.price th { color: var(--amber); font-weight: 700; font-size: 12px; letter-spacing: 2px; font-family: var(--mono); }
@@ -193,9 +195,54 @@ function fmtTime(iso) {
 const CAT_TAG = { "光伏": "tag-pv", "储能": "tag-st", "新能源": "tag-ne", "AI": "tag-ai", "招投标": "tag-bid" };
 const CAT_ORDER = ["光伏", "储能", "新能源", "AI", "招投标"];
 const CHART_COLORS = ["#00e5ff", "#ffb000", "#00ff9d", "#c26bff", "#ff3860"];
+const VIEWS = [
+  { id: "overview", label: "01 电价与辐照" },
+  { id: "calc",     label: "02 收益测算" },
+  { id: "news",     label: "03 每日资讯" },
+  { id: "chain",    label: "04 产业链价格" },
+  { id: "policy",   label: "05 政策跟踪" }
+];
 let NEWS = [];
 let activeCat = "全部";
 let query = "";
+let activeView = "overview";
+
+/* ---------- 视图切换 & URL Hash 路由 ---------- */
+function switchView(viewId, updateHash) {
+  const valid = VIEWS.some(v => v.id === viewId) ? viewId : "overview";
+  activeView = valid;
+
+  document.querySelectorAll(".nav-tab").forEach(btn => {
+    btn.classList.toggle("on", btn.dataset.view === valid);
+  });
+  document.querySelectorAll(".view-panel").forEach(panel => {
+    panel.classList.toggle("active", panel.id === "view-" + valid);
+  });
+
+  if (valid === "calc") calc();
+
+  if (updateHash !== false) {
+    try {
+      const targetHash = "#" + valid;
+      if (location.hash !== targetHash) {
+        history.pushState(null, "", targetHash);
+      }
+    } catch (e) {}
+  }
+}
+
+function getHashView() {
+  const raw = (location.hash || "").replace(/^#/, "").trim();
+  // 兼容旧版锚点链接
+  const alias = { "sec-price": "overview", "sec-irr": "overview", "sec-calc": "calc",
+                  "sec-news": "news", "sec-chain": "chain", "sec-policy": "policy" };
+  const mapped = alias[raw] || raw;
+  return VIEWS.some(v => v.id === mapped) ? mapped : "overview";
+}
+
+window.addEventListener("hashchange", () => {
+  switchView(getHashView(), false);
+});
 
 /* ---------- 主题：默认像素暗夜 ---------- */
 function initTheme() {
@@ -214,25 +261,6 @@ function toggleTheme() {
   try { localStorage.setItem("wb-theme", dark ? "dark" : "light"); } catch (e) {}
   const b = document.getElementById("themeBtn");
   if (b) b.textContent = dark ? "[ 日间 ]" : "[ 夜间 ]";
-}
-
-function toggleCalc() {
-  const body = document.getElementById("calcBody");
-  const btn = document.getElementById("calcToggle");
-  const collapsed = body.classList.toggle("collapsed");
-  btn.textContent = collapsed ? "[+] 打开测算器" : "[-] 收起测算器";
-  if (!collapsed) calc();
-}
-function gotoCalc(e) {
-  if (e) e.preventDefault();
-  const body = document.getElementById("calcBody");
-  const btn = document.getElementById("calcToggle");
-  if (body.classList.contains("collapsed")) {
-    body.classList.remove("collapsed");
-    btn.textContent = "[-] 收起测算器";
-    calc();
-  }
-  document.getElementById("sec-calc").scrollIntoView({ behavior: "smooth" });
 }
 
 /* ---------- 资讯：搜索 + 分类 ---------- */
@@ -428,15 +456,22 @@ function render(d) {
   const sc = d.supply_chain || [];
   const pols = d.policies || [];
 
+  let navHtml = '<nav class="topnav" role="tablist">';
+  VIEWS.forEach(v => {
+    navHtml += '<button type="button" class="nav-tab" data-view="' + esc(v.id) +
+      '" onclick="switchView(\'' + esc(v.id) + '\')">' + esc(v.label) + "</button>";
+  });
+  navHtml += "</nav>";
+
   let scHtml = "";
   if (sc.length) {
-    scHtml = '<table class="price"><tr><th>环节</th><th>规格</th><th>价格</th><th>单位</th><th>报价日期</th></tr>';
+    scHtml = '<div class="table-wrap"><table class="price"><tr><th>环节</th><th>规格</th><th>价格</th><th>单位</th><th>报价日期</th></tr>';
     sc.forEach(r => {
       scHtml += "<tr><td>" + esc(r.item) + "</td><td>" + esc(r.spec) + '</td><td class="p">' +
         esc(r.price) + "</td><td>" + esc(r.unit) + "</td><td>" + esc(r.date) +
         (r.source ? "<br><small style='color:var(--muted)'>" + esc(r.source) + "</small>" : "") + "</td></tr>";
     });
-    scHtml += "</table>";
+    scHtml += "</table></div>";
   } else {
     scHtml = '<div class="empty">> 暂无价格数据。</div>';
   }
@@ -455,7 +490,7 @@ function render(d) {
   const cats = ["全部"].concat(CAT_ORDER);
   let tabsHtml = '<div class="tabs">';
   cats.forEach((c, i) => {
-    tabsHtml += '<button class="tab' + (i === 0 ? " on" : "") + '" onclick="setCat(\'' + esc(c) +
+    tabsHtml += '<button type="button" class="tab' + (i === 0 ? " on" : "") + '" onclick="setCat(\'' + esc(c) +
       '\', this)">' + esc(c) + "</button>";
   });
   tabsHtml += "</div>";
@@ -467,83 +502,88 @@ function render(d) {
     '<div class="meta">[LOG] 数据更新于 ' + esc(fmtTime(d.updated_at)) + "（北京时间）</div>" +
     (d.digest ? '<div class="digest">&gt; ' + esc(d.digest) + "</div>" : "") + "</header>" +
 
-    '<nav class="topnav">' +
-      '<a href="#sec-price">广东电价</a>' +
-      '<a href="#sec-calc" onclick="gotoCalc(event)">收益测算</a>' +
-      '<a href="#sec-irr">辐照预报</a>' +
-      '<a href="#sec-news">每日资讯</a>' +
-      '<a href="#sec-chain">产业链价格</a>' +
-      '<a href="#sec-policy">政策跟踪</a>' +
-    "</nav>" +
+    navHtml +
 
-    '<section id="sec-price"><h2>广东电价</h2><div class="grid2">' +
-      '<div class="card"><h3>峰谷分时电价</h3>' +
-        '<div class="kv"><span class="k">峰平谷比价</span><span class="v">' + esc(tou.ratio) + "</span></div>" +
-        '<div class="kv"><span class="k">高峰时段</span><span class="v">' + esc(tou.peak) + "</span></div>" +
-        '<div class="kv"><span class="k">低谷时段</span><span class="v">' + esc(tou.valley) + "</span></div>" +
-        '<div class="kv"><span class="k">平段</span><span class="v">' + esc(tou.flat_note) + "</span></div>" +
-        (tou.spread ? '<div class="note">📊 ' + esc(tou.spread) + "</div>" : "") +
-        (tou.example ? '<div class="note">' + esc(tou.example) + "</div>" : "") +
-        (tou.note ? '<div class="note">⚠️ ' + esc(tou.note) + "</div>" : "") +
-      "</div>" +
-      '<div class="card"><h3>余电上网与机制电价</h3>' +
-        '<div class="kv"><span class="k">存量项目</span><span class="v">' + esc(fi.existing) + "</span></div>" +
-        '<div class="kv"><span class="k">增量竞价上限</span><span class="v">' + esc(fi.new_cap) + "</span></div>" +
-        '<div class="kv"><span class="k">现货参考</span><span class="v">' + esc(fi.spot_ref) + "</span></div>" +
-        '<div class="kv"><span class="k">中长期参考</span><span class="v">' + esc(fi.midlong_ref) + "</span></div>" +
-        (fi.green_ref ? '<div class="kv"><span class="k">绿电环境价值</span><span class="v">' + esc(fi.green_ref) + "</span></div>" : "") +
-      "</div>" +
-      '<div class="card"><h3>' + esc(ag.title || "代理购电价（月度）") + "</h3>" +
-        (ag.note ? '<div class="note">' + esc(ag.note) + "</div>" : "") +
-        (ag.update_note ? '<div class="warn">🗓 ' + esc(ag.update_note) + "</div>" : "") +
-        (ag.url ? '<div class="extlink"><a href="' + esc(ag.url) + '" target="_blank" rel="noopener">查看电价表示例（PDF）</a></div>' : "") +
-      "</div>" +
-      '<div class="card"><h3>' + esc(sp.title || "电力现货参考") + "</h3>" +
-        (sp.day_ahead ? '<div class="kv"><span class="k">日前均价</span><span class="v">' + esc(sp.day_ahead) + "</span></div>" : "") +
-        (sp.realtime ? '<div class="kv"><span class="k">实时均价</span><span class="v">' + esc(sp.realtime) + "</span></div>" : "") +
-        (sp.settle ? '<div class="kv"><span class="k">新能源结算均价</span><span class="v">' + esc(sp.settle) + "</span></div>" : "") +
-        (sp.date_note ? '<div class="note">' + esc(sp.date_note) + "</div>" : "") +
-        (sp.url ? '<div class="extlink"><a href="' + esc(sp.url) + '" target="_blank" rel="noopener">来源：广东电力市场半年报</a></div>' : "") +
-      "</div>" +
-      '<div class="card"><h3>' + esc(gr.title || "绿电交易参考") + "</h3>" +
-        (gr.energy ? '<div class="kv"><span class="k">电能量均价</span><span class="v">' + esc(gr.energy) + "</span></div>" : "") +
-        (gr.env_value ? '<div class="kv"><span class="k">环境价值均价</span><span class="v">' + esc(gr.env_value) + "</span></div>" : "") +
-        (gr.date_note ? '<div class="note">' + esc(gr.date_note) + "</div>" : "") +
-        (gr.url ? '<div class="extlink"><a href="' + esc(gr.url) + '" target="_blank" rel="noopener">来源：广东电力市场半年报</a></div>' : "") +
-      "</div>" +
-    "</div></section>" +
+    /* ===== 视图 01：电价与辐照（默认首屏） ===== */
+    '<div class="view-panel" id="view-overview">' +
+      '<section><h2>广东电价</h2><div class="grid2">' +
+        '<div class="card"><h3>峰谷分时电价</h3>' +
+          '<div class="kv"><span class="k">峰平谷比价</span><span class="v">' + esc(tou.ratio) + "</span></div>" +
+          '<div class="kv"><span class="k">高峰时段</span><span class="v">' + esc(tou.peak) + "</span></div>" +
+          '<div class="kv"><span class="k">低谷时段</span><span class="v">' + esc(tou.valley) + "</span></div>" +
+          '<div class="kv"><span class="k">平段</span><span class="v">' + esc(tou.flat_note) + "</span></div>" +
+          (tou.spread ? '<div class="note">📊 ' + esc(tou.spread) + "</div>" : "") +
+          (tou.example ? '<div class="note">' + esc(tou.example) + "</div>" : "") +
+          (tou.note ? '<div class="note">⚠️ ' + esc(tou.note) + "</div>" : "") +
+        "</div>" +
+        '<div class="card"><h3>余电上网与机制电价</h3>' +
+          '<div class="kv"><span class="k">存量项目</span><span class="v">' + esc(fi.existing) + "</span></div>" +
+          '<div class="kv"><span class="k">增量竞价上限</span><span class="v">' + esc(fi.new_cap) + "</span></div>" +
+          '<div class="kv"><span class="k">现货参考</span><span class="v">' + esc(fi.spot_ref) + "</span></div>" +
+          '<div class="kv"><span class="k">中长期参考</span><span class="v">' + esc(fi.midlong_ref) + "</span></div>" +
+          (fi.green_ref ? '<div class="kv"><span class="k">绿电环境价值</span><span class="v">' + esc(fi.green_ref) + "</span></div>" : "") +
+        "</div>" +
+        '<div class="card"><h3>' + esc(ag.title || "代理购电价（月度）") + "</h3>" +
+          (ag.note ? '<div class="note">' + esc(ag.note) + "</div>" : "") +
+          (ag.update_note ? '<div class="warn">🗓 ' + esc(ag.update_note) + "</div>" : "") +
+          (ag.url ? '<div class="extlink"><a href="' + esc(ag.url) + '" target="_blank" rel="noopener">查看电价表示例（PDF）</a></div>' : "") +
+        "</div>" +
+        '<div class="card"><h3>' + esc(sp.title || "电力现货参考") + "</h3>" +
+          (sp.day_ahead ? '<div class="kv"><span class="k">日前均价</span><span class="v">' + esc(sp.day_ahead) + "</span></div>" : "") +
+          (sp.realtime ? '<div class="kv"><span class="k">实时均价</span><span class="v">' + esc(sp.realtime) + "</span></div>" : "") +
+          (sp.settle ? '<div class="kv"><span class="k">新能源结算均价</span><span class="v">' + esc(sp.settle) + "</span></div>" : "") +
+          (sp.date_note ? '<div class="note">' + esc(sp.date_note) + "</div>" : "") +
+          (sp.url ? '<div class="extlink"><a href="' + esc(sp.url) + '" target="_blank" rel="noopener">来源：广东电力市场半年报</a></div>' : "") +
+        "</div>" +
+        '<div class="card"><h3>' + esc(gr.title || "绿电交易参考") + "</h3>" +
+          (gr.energy ? '<div class="kv"><span class="k">电能量均价</span><span class="v">' + esc(gr.energy) + "</span></div>" : "") +
+          (gr.env_value ? '<div class="kv"><span class="k">环境价值均价</span><span class="v">' + esc(gr.env_value) + "</span></div>" : "") +
+          (gr.date_note ? '<div class="note">' + esc(gr.date_note) + "</div>" : "") +
+          (gr.url ? '<div class="extlink"><a href="' + esc(gr.url) + '" target="_blank" rel="noopener">来源：广东电力市场半年报</a></div>' : "") +
+        "</div>" +
+      "</div></section>" +
+      '<section><h2>辐照预报（广东·未来7天）</h2><div id="irrBody"><div class="empty">> 辐照数据加载中…</div></div></section>' +
+    "</div>" +
 
-    '<section id="sec-calc"><h2>分布式收益测算器</h2>' +
-      '<button class="btn" id="calcToggle" onclick="toggleCalc()">[+] 打开测算器</button>' +
-      '<div id="calcBody" class="collapsed">' +
-      '<div class="calc-grid">' +
-        '<div class="field"><label>装机容量（kW）</label><input id="c_cap" type="number" value="100" oninput="calc()"></div>' +
-        '<div class="field"><label>年利用小时数（h）</label><input id="c_hours" type="number" value="1100" oninput="calc()"></div>' +
-        '<div class="field"><label>自发自用比例（%）</label><input id="c_self" type="number" value="80" oninput="calc()"></div>' +
-        '<div class="field"><label>单位造价（元/W）</label><input id="c_cost" type="number" step="0.1" value="3.2" oninput="calc()"></div>' +
-        '<div class="field"><label>峰电价（元/kWh）</label><input id="c_peak" type="number" step="0.01" value="1.12" oninput="calc()"></div>' +
-        '<div class="field"><label>平电价（元/kWh）</label><input id="c_flat" type="number" step="0.01" value="0.67" oninput="calc()"></div>' +
-        '<div class="field"><label>谷电价（元/kWh）</label><input id="c_val" type="number" step="0.01" value="0.27" oninput="calc()"></div>' +
-        '<div class="field"><label>余电上网价（元/kWh）</label><input id="c_fi" type="number" step="0.001" value="0.453" oninput="calc()"></div>' +
-      "</div>" +
-      '<div class="calc-result" id="calcResult"></div>' +
-      '<div class="warn">⚠️ 简化估算，仅供参考：未计运维成本、组件衰减与资金成本；自用电按峰30%/平50%/谷20%加权估算。</div>' +
-      "</div>" +
-    "</section>" +
+    /* ===== 视图 02：分布式收益测算器 ===== */
+    '<div class="view-panel" id="view-calc">' +
+      '<section><h2>分布式收益测算器</h2>' +
+        '<div class="calc-grid">' +
+          '<div class="field"><label>装机容量（kW）</label><input id="c_cap" type="number" value="100" oninput="calc()"></div>' +
+          '<div class="field"><label>年利用小时数（h）</label><input id="c_hours" type="number" value="1100" oninput="calc()"></div>' +
+          '<div class="field"><label>自发自用比例（%）</label><input id="c_self" type="number" value="80" oninput="calc()"></div>' +
+          '<div class="field"><label>单位造价（元/W）</label><input id="c_cost" type="number" step="0.1" value="3.2" oninput="calc()"></div>' +
+          '<div class="field"><label>峰电价（元/kWh）</label><input id="c_peak" type="number" step="0.01" value="1.12" oninput="calc()"></div>' +
+          '<div class="field"><label>平电价（元/kWh）</label><input id="c_flat" type="number" step="0.01" value="0.67" oninput="calc()"></div>' +
+          '<div class="field"><label>谷电价（元/kWh）</label><input id="c_val" type="number" step="0.01" value="0.27" oninput="calc()"></div>' +
+          '<div class="field"><label>余电上网价（元/kWh）</label><input id="c_fi" type="number" step="0.001" value="0.453" oninput="calc()"></div>' +
+        "</div>" +
+        '<div class="calc-result" id="calcResult"></div>' +
+        '<div class="warn">⚠️ 简化估算，仅供参考：未计运维成本、组件衰减与资金成本；自用电按峰30%/平50%/谷20%加权估算。</div>' +
+      "</section>" +
+    "</div>" +
 
-    '<section id="sec-irr"><h2>辐照预报（广东·未来7天）</h2><div id="irrBody"><div class="empty">> 辐照数据加载中…</div></div></section>' +
+    /* ===== 视图 03：每日资讯 ===== */
+    '<div class="view-panel" id="view-news">' +
+      '<section><h2>每日资讯</h2>' +
+        '<div class="toolbar"><input class="search" id="newsSearch" placeholder="> 搜索标题或摘要…" oninput="onSearch(this.value)">' + tabsHtml + "</div>" +
+        '<div id="newsList"></div>' +
+      "</section>" +
+    "</div>" +
 
-    '<section id="sec-news"><h2>每日资讯</h2>' +
-      '<div class="toolbar"><input class="search" id="newsSearch" placeholder="> 搜索标题或摘要…" oninput="onSearch(this.value)">' + tabsHtml + "</div>" +
-      '<div id="newsList"></div>' +
-    "</section>" +
+    /* ===== 视图 04：产业链价格 ===== */
+    '<div class="view-panel" id="view-chain">' +
+      '<section><h2>产业链价格</h2>' +
+        '<div id="trendChart"><div class="empty">> 走势图加载中…</div></div>' +
+        scHtml +
+        '<div class="note">价格每周对照 InfoLink / 硅业分会报价手动更新；带"预测区间"字样的为机构年度预测，非实时报价。</div>' +
+      "</section>" +
+    "</div>" +
 
-    "<section id=\"sec-chain\"><h2>产业链价格</h2>" +
-      '<div id="trendChart"><div class="empty">> 走势图加载中…</div></div>' +
-      scHtml +
-      '<div class="note">价格每周对照 InfoLink / 硅业分会报价手动更新；带"预测区间"字样的为机构年度预测，非实时报价。</div></section>' +
-
-    "<section id=\"sec-policy\"><h2>政策跟踪</h2>" + polHtml + "</section>" +
+    /* ===== 视图 05：政策跟踪 ===== */
+    '<div class="view-panel" id="view-policy">' +
+      '<section><h2>政策跟踪</h2>' + polHtml + "</section>" +
+    "</div>" +
 
     "<footer>&gt; END OF FEED _<br>数据来源：Bing 新闻、量子位、InfoLink、硅业分会、广东电力交易中心、Open-Meteo 等公开渠道<br>" +
     "电价以官方正式文件为准 · 每天早上自动更新</footer>";
@@ -553,6 +593,7 @@ function render(d) {
   calc();
   loadIrr();
   drawChart();
+  switchView(getHashView(), false);
 }
 
 async function load() {
